@@ -1,11 +1,12 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Card, Text, Stack, Group } from "@mantine/core"
+import { Button, Text, Stack, Group } from "@mantine/core"
 import { saveGameState, loadGameState, clearGameState, confirmClearData } from "../utils/storage"
 import { generateAdditionProblems, type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { NumberPad } from "./number-pad"
+import { ProblemDisplay } from "./problem-display"
 import { formatTime } from "../utils/time"
 
 export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
@@ -142,23 +143,13 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
             <div style={{ width: '80px' }} />
           </Group>
 
-          <Card withBorder shadow="lg" padding="xl">
-            <Text 
-              size="4rem" 
-              fw="bold" 
-              ta="center"
-              c={isWrong ? "red" : undefined}
-              style={{ 
-                fontSize: 'clamp(3rem, 8vw, 5rem)',
-                transition: 'color 0.2s'
-              }}
-            >
-              {currentProblem.num1} + {currentProblem.num2} ={" "}
-              <span style={{ color: selectedAnswer !== null ? (isWrong ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-blue-6)') : 'inherit' }}>
-                {selectedAnswer !== null ? selectedAnswer : "?"}
-              </span>
-            </Text>
-          </Card>
+          <ProblemDisplay
+            num1={currentProblem.num1}
+            num2={currentProblem.num2}
+            operator="+"
+            selectedAnswer={selectedAnswer}
+            isWrong={isWrong}
+          />
 
           <NumberPad
             numbers={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
