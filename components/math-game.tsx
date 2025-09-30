@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Text, Stack, Group } from "@mantine/core"
+import { Button, Text, Stack, Group, Center } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { NumberPad } from "./number-pad"
@@ -103,9 +103,9 @@ export function MathGame({
 
   if (!isReady || !currentProblem) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Center style={{ minHeight: '100vh' }}>
         <Text size="xl" fw="bold">読み込み中...</Text>
-      </div>
+      </Center>
     )
   }
 
@@ -122,7 +122,7 @@ export function MathGame({
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+    <Center style={{ minHeight: '100vh', padding: '1rem' }}>
       <div style={{ width: '100%', maxWidth: '48rem' }}>
         <Stack gap="xl">
           <Group justify="space-between" align="center">
@@ -156,6 +156,6 @@ export function MathGame({
           />
         </Stack>
       </div>
-    </div>
+    </Center>
   )
 }

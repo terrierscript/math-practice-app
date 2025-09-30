@@ -1,4 +1,4 @@
-import { Button, Card, Text, Stack } from "@mantine/core"
+import { Button, Card, Text, Stack, Center } from "@mantine/core"
 import { formatTime } from "../utils/time"
 
 interface GameCompletionProps {
@@ -17,7 +17,7 @@ export function GameCompletion({
   buttonColor = "blue" 
 }: GameCompletionProps) {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+    <Center style={{ minHeight: '100vh', padding: '1rem' }}>
       <Card withBorder shadow="lg" padding="xl" style={{ textAlign: 'center' }}>
         <Stack gap="lg">
           <Text size="4rem">🎉</Text>
@@ -42,6 +42,6 @@ export function GameCompletion({
           )}
         </Stack>
       </Card>
-    </div>
+    </Center>
   )
 }

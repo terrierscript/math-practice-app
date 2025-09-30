@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Stack, Card, Text } from "@mantine/core"
+import { Button, Stack, Card, Text, Center } from "@mantine/core"
 import { AdditionGame } from "../components/addition-game"
 import { SubtractionGame } from "../components/subtraction-game"
 import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, saveGameState, type GameMode, type GameState } from "../utils/storage"
@@ -37,7 +37,7 @@ export default function MathPracticePage() {
 
   if (mode === null) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+      <Center style={{ minHeight: '100vh', padding: '1rem' }}>
         <Stack gap="xl" style={{ width: '100%', maxWidth: '400px' }}>
           {savedStateInfo && (
             <Card withBorder shadow="md" padding="lg">
@@ -100,7 +100,7 @@ export default function MathPracticePage() {
             </Button>
           )}
         </Stack>
-      </div>
+      </Center>
     )
   }
 
