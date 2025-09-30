@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
+import { Button, Card, Text, Stack, Group } from "@mantine/core"
 import { saveGameState, loadGameState, clearGameState, confirmClearData } from "../utils/storage"
 import { generateAdditionProblems, type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
+import { NumberPad } from "./number-pad"
 import { formatTime } from "../utils/time"
 
 export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
@@ -159,35 +160,15 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
             </Text>
           </Card>
 
-          <Grid gutter="md">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-              <Grid.Col span={{ base: 6, xs: 4, sm: 2.4 }} key={num}>
-                <Button
-                  onClick={() => handleNumberClick(num)}
-                  size="lg"
-                  fullWidth
-                  variant="filled"
-                  radius="xl"
-                  color={
-                    selectedAnswer === num
-                      ? isWrong
-                        ? "red"
-                        : "blue"
-                      : "orange"
-                  }
-                  style={{
-                    height: '4rem',
-                    fontSize: '2rem',
-                    fontWeight: 'bold',
-                    transform: selectedAnswer === num ? 'scale(1.1)' : 'scale(1)',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  {num}
-                </Button>
-              </Grid.Col>
-            ))}
-          </Grid>
+          <NumberPad
+            numbers={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+            selectedAnswer={selectedAnswer}
+            isWrong={isWrong}
+            onNumberClick={handleNumberClick}
+            baseColor="orange"
+            selectedCorrectColor="blue"
+            selectedWrongColor="red"
+          />
         </Stack>
       </div>
     </div>
