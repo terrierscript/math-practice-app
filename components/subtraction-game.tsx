@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
 import { saveGameState, loadGameState, clearGameState, confirmClearData } from "@/utils/storage"
 import { generateSubtractionProblems, type Problem } from "@/utils/problems"
+import { GameCompletion } from "@/components/game-completion"
 
 export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
   const [problems, setProblems] = useState<Problem[]>([])
@@ -111,32 +112,13 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
 
   if (isCompleted) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-        <Card withBorder shadow="lg" padding="xl" style={{ textAlign: 'center' }}>
-          <Stack gap="lg">
-            <Text size="4rem">🎉</Text>
-            <Text size="2xl" fw="bold" c="blue">おつかれさまでした！</Text>
-            <Stack gap="sm">
-              <Text size="xl">全{problems.length}問完了！</Text>
-              <Text size="xl">正解数: {score}問</Text>
-              <Text size="xl">かかった時間: {formatTime(elapsedSeconds)}</Text>
-            </Stack>
-            {onComplete && (
-              <Button 
-                onClick={onComplete}
-                size="lg"
-                color="orange"
-                variant="filled"
-                radius="xl"
-                fullWidth
-                style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
-              >
-                メニューに戻る
-              </Button>
-            )}
-          </Stack>
-        </Card>
-      </div>
+      <GameCompletion 
+        totalProblems={problems.length}
+        score={score}
+        elapsedSeconds={elapsedSeconds}
+        onComplete={onComplete}
+        buttonColor="orange"
+      />
     )
   }
 
