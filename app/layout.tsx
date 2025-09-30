@@ -1,11 +1,14 @@
+// Import styles of packages that you've installed.
+// All packages except `@mantine/hooks` require styles imports
+import '@mantine/core/styles.css'
+
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
-import { ColorSchemeScript, MantineProvider } from '@mantine/core'
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  title: 'Math Practice App',
+  description: '小学生向けの算数練習アプリ',
 }
 
 export default function RootLayout({
@@ -14,14 +17,12 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" {...mantineHtmlProps}>
       <head>
         <ColorSchemeScript />
       </head>
-      <body style={{ margin: 0, padding: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif' }}>
-        <MantineProvider>
-          {children}
-        </MantineProvider>
+      <body>
+        <MantineProvider>{children}</MantineProvider>
         <Analytics />
       </body>
     </html>
