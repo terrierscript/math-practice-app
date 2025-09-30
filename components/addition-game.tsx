@@ -3,9 +3,9 @@ import { generateAdditionProblems } from "../utils/problems"
 import { type GameState } from "../utils/storage"
 
 interface AdditionGameProps {
-  onComplete?: () => void
+  onComplete: () => void
   initialState?: GameState
-  onStateChange?: (state: Omit<GameState, 'savedAt'>) => void
+  onStateChange: (state: Omit<GameState, 'savedAt'>) => void
 }
 
 export function AdditionGame({ onComplete, initialState, onStateChange }: AdditionGameProps) {

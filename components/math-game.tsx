@@ -19,8 +19,8 @@ interface MathGameProps {
   buttonColor: string
   initialState?: GameState
   problems: Problem[]
-  onComplete?: () => void
-  onStateChange?: (state: Omit<GameState, 'savedAt'>) => void
+  onComplete: () => void
+  onStateChange: (state: Omit<GameState, 'savedAt'>) => void
 }
 
 export function MathGame({
