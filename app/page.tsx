@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button, Stack, Card, Text } from "@mantine/core"
 import { AdditionGame } from "../components/addition-game"
 import { SubtractionGame } from "../components/subtraction-game"
-import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, type GameMode } from "../utils/storage"
+import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, saveGameState, type GameMode, type GameState } from "../utils/storage"
 
 type Mode = GameMode | null
 
@@ -104,8 +104,20 @@ export default function MathPracticePage() {
     )
   }
 
+  const handleStateChange = (state: Omit<GameState, 'savedAt'>) => {
+    const gameState = {
+      ...state,
+      savedAt: Date.now()
+    }
+    saveGameState(gameState)
+  }
+
+  const initialState = loadGameState()
+
   return mode === "addition" ? (
     <AdditionGame 
+      initialState={initialState?.mode === "addition" ? initialState : undefined}
+      onStateChange={handleStateChange}
       onComplete={() => {
         clearGameState()
         setMode(null)
@@ -114,6 +126,8 @@ export default function MathPracticePage() {
     />
   ) : (
     <SubtractionGame 
+      initialState={initialState?.mode === "subtraction" ? initialState : undefined}
+      onStateChange={handleStateChange}
       onComplete={() => {
         clearGameState()
         setMode(null)

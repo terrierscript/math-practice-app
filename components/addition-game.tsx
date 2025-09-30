@@ -1,6 +1,16 @@
 import { MathGame } from "./math-game"
+import { generateAdditionProblems } from "../utils/problems"
+import { type GameState } from "../utils/storage"
 
-export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
+interface AdditionGameProps {
+  onComplete?: () => void
+  initialState?: GameState
+  onStateChange?: (state: Omit<GameState, 'savedAt'>) => void
+}
+
+export function AdditionGame({ onComplete, initialState, onStateChange }: AdditionGameProps) {
+  const problems = initialState?.problems ?? generateAdditionProblems()
+
   return (
     <MathGame
       mode="addition"
@@ -10,7 +20,10 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
       selectedCorrectColor="blue"
       selectedWrongColor="red"
       buttonColor="blue"
+      initialState={initialState}
+      problems={problems}
       onComplete={onComplete}
+      onStateChange={onStateChange}
     />
   )
 }

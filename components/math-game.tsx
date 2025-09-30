@@ -2,13 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { Button, Text, Stack, Group } from "@mantine/core"
-import { saveGameState, loadGameState, clearGameState, confirmClearData } from "../utils/storage"
-import { generateAdditionProblems, generateSubtractionProblems, type Problem } from "../utils/problems"
+import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { NumberPad } from "./number-pad"
 import { ProblemDisplay } from "./problem-display"
 import { formatTime } from "../utils/time"
-import { type GameMode } from "../utils/storage"
+import { type GameMode, type GameState } from "../utils/storage"
 
 interface MathGameProps {
   mode: GameMode
@@ -18,7 +17,10 @@ interface MathGameProps {
   selectedCorrectColor: string
   selectedWrongColor: string
   buttonColor: string
+  initialState?: GameState
+  problems: Problem[]
   onComplete?: () => void
+  onStateChange?: (state: Omit<GameState, 'savedAt'>) => void
 }
 
 export function MathGame({
@@ -29,37 +31,24 @@ export function MathGame({
   selectedCorrectColor,
   selectedWrongColor,
   buttonColor,
-  onComplete
+  initialState,
+  problems,
+  onComplete,
+  onStateChange
 }: MathGameProps) {
-  const [problems, setProblems] = useState<Problem[]>([])
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(initialState?.currentIndex ?? 0)
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isWrong, setIsWrong] = useState(false)
-  const [score, setScore] = useState(0)
-  const [elapsedSeconds, setElapsedSeconds] = useState(0)
-  const [isReady, setIsReady] = useState(false)
+  const [score, setScore] = useState(initialState?.score ?? 0)
+  const [elapsedSeconds, setElapsedSeconds] = useState(initialState?.elapsedSeconds ?? 0)
   const [isCompleted, setIsCompleted] = useState(false)
 
+  // 初期化完了をマーク
+  const [isReady, setIsReady] = useState(false)
+
   useEffect(() => {
-    // 保存された状態を確認
-    const savedState = loadGameState()
-    
-    if (savedState && savedState.mode === mode) {
-      // 保存された状態を復元
-      setProblems(savedState.problems)
-      setCurrentIndex(savedState.currentIndex)
-      setScore(savedState.score)
-      setElapsedSeconds(savedState.elapsedSeconds)
-      setIsReady(true)
-    } else {
-      // 新しいゲームを開始
-      const newProblems = mode === "addition" 
-        ? generateAdditionProblems() 
-        : generateSubtractionProblems()
-      setProblems(newProblems)
-      setIsReady(true)
-    }
-  }, [mode])
+    setIsReady(true)
+  }, [])
 
   useEffect(() => {
     if (!isReady) return
@@ -71,7 +60,7 @@ export function MathGame({
     return () => clearInterval(timer)
   }, [isReady])
 
-  // 状態が変更されるたびに保存
+  // 状態が変更されるたびに外部に通知
   useEffect(() => {
     if (!isReady || isCompleted || problems.length === 0) return
 
@@ -80,12 +69,11 @@ export function MathGame({
       currentIndex,
       score,
       elapsedSeconds,
-      problems,
-      savedAt: Date.now()
+      problems
     }
 
-    saveGameState(gameState)
-  }, [mode, currentIndex, score, elapsedSeconds, problems, isReady, isCompleted])
+    onStateChange?.(gameState)
+  }, [mode, currentIndex, score, elapsedSeconds, problems, isReady, isCompleted, onStateChange])
 
   const currentProblem = problems[currentIndex]
 
