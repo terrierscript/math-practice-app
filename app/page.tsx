@@ -1,10 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Stack, Card, Text, Group } from "@mantine/core"
+import { Button, Stack, Card, Text } from "@mantine/core"
 import { AdditionGame } from "@/components/addition-game"
 import { SubtractionGame } from "@/components/subtraction-game"
-import { hasSavedState, getSavedStateInfo, loadGameState, clearGameState, type GameMode } from "@/utils/storage"
+import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, type GameMode } from "@/utils/storage"
 
 type Mode = GameMode | null
 
@@ -26,6 +26,13 @@ export default function MathPracticePage() {
   const handleNewGame = (gameMode: GameMode) => {
     clearGameState()
     setMode(gameMode)
+  }
+
+  const handleClearData = () => {
+    if (confirmClearData()) {
+      clearGameState()
+      setSavedStateInfo(null)
+    }
   }
 
   if (mode === null) {
@@ -78,6 +85,20 @@ export default function MathPracticePage() {
           >
             ひきざん
           </Button>
+
+          {savedStateInfo && (
+            <Button
+              onClick={handleClearData}
+              size="md"
+              color="red"
+              variant="outline"
+              radius="xl"
+              fullWidth
+              style={{ height: '48px', fontSize: '1rem', fontWeight: 'bold', marginTop: '1rem' }}
+            >
+              保存データを削除
+            </Button>
+          )}
         </Stack>
       </div>
     )

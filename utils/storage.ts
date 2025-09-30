@@ -14,8 +14,18 @@ export interface GameState {
   savedAt: number // タイムスタンプ
 }
 
-// 1日のミリ秒数
-const ONE_DAY_MS = 24 * 60 * 60 * 1000
+// その日の0時のタイムスタンプを取得
+function getTodayMidnight(): number {
+  const now = new Date()
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return midnight.getTime()
+}
+
+// 保存された日付が今日かチェック
+function isSavedToday(savedAt: number): boolean {
+  const todayMidnight = getTodayMidnight()
+  return savedAt >= todayMidnight
+}
 
 // ゲーム状態を保存
 export function saveGameState(state: GameState): void {
@@ -38,8 +48,8 @@ export function loadGameState(): GameState | null {
 
     const state: GameState = JSON.parse(saved)
     
-    // 1日以上経過している場合は無効
-    if (Date.now() - state.savedAt > ONE_DAY_MS) {
+    // 日付が変わっている場合は無効
+    if (!isSavedToday(state.savedAt)) {
       clearGameState()
       return null
     }
@@ -92,4 +102,9 @@ function formatTimeAgo(ms: number): string {
   } else {
     return "今"
   }
+}
+
+// データクリア確認メッセージ
+export function confirmClearData(): boolean {
+  return confirm("保存されたゲームデータをすべて削除しますか？\nこの操作は取り消せません。")
 }

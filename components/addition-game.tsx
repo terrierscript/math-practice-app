@@ -2,13 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
-import { saveGameState, loadGameState, clearGameState } from "@/utils/storage"
-
-type Problem = {
-  num1: number
-  num2: number
-  answer: number
-}
+import { saveGameState, loadGameState, clearGameState, confirmClearData } from "@/utils/storage"
+import { generateAdditionProblems, type Problem } from "@/utils/problems"
 
 export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
   const [problems, setProblems] = useState<Problem[]>([])
@@ -33,22 +28,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
       setIsReady(true)
     } else {
       // 新しいゲームを開始
-      const allProblems: Problem[] = []
-
-      for (let i = 0; i <= 9; i++) {
-        for (let j = 0; j <= 9; j++) {
-          if (i + j <= 10 && i + j > 0) {
-            allProblems.push({
-              num1: i,
-              num2: j,
-              answer: i + j,
-            })
-          }
-        }
-      }
-
-      const shuffled = allProblems.sort(() => Math.random() - 0.5)
-      setProblems(shuffled)
+      const newProblems = generateAdditionProblems()
+      setProblems(newProblems)
       setIsReady(true)
     }
   }, [])
@@ -78,6 +59,15 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
 
     saveGameState(gameState)
   }, [currentIndex, score, elapsedSeconds, problems, isReady, isCompleted])
+
+  const handleClearData = () => {
+    if (confirmClearData()) {
+      clearGameState()
+      if (onComplete) {
+        onComplete()
+      }
+    }
+  }
 
   const currentProblem = problems[currentIndex]
 
@@ -143,20 +133,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                   setIsWrong(false)
                   
                   // 新しい問題セットを生成
-                  const allProblems: Problem[] = []
-                  for (let i = 0; i <= 9; i++) {
-                    for (let j = 0; j <= 9; j++) {
-                      if (i + j <= 10 && i + j > 0) {
-                        allProblems.push({
-                          num1: i,
-                          num2: j,
-                          answer: i + j,
-                        })
-                      }
-                    }
-                  }
-                  const shuffled = allProblems.sort(() => Math.random() - 0.5)
-                  setProblems(shuffled)
+                  const newProblems = generateAdditionProblems()
+                  setProblems(newProblems)
                 }}
                 size="lg"
                 color="orange"
@@ -191,12 +169,24 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       <div style={{ width: '100%', maxWidth: '48rem' }}>
         <Stack gap="xl">
-          <Group justify="center" gap="lg">
-            <Text size="lg" c="dimmed">
-              {currentIndex + 1} / {problems.length}
-            </Text>
-            <Text size="lg" c="dimmed">|</Text>
-            <Text size="lg" c="dimmed">{formatTime(elapsedSeconds)}</Text>
+          <Group justify="space-between" align="center">
+            <Button
+              onClick={handleClearData}
+              size="xs"
+              color="red"
+              variant="outline"
+              radius="xl"
+            >
+              データ削除
+            </Button>
+            <Group gap="lg">
+              <Text size="lg" c="dimmed">
+                {currentIndex + 1} / {problems.length}
+              </Text>
+              <Text size="lg" c="dimmed">|</Text>
+              <Text size="lg" c="dimmed">{formatTime(elapsedSeconds)}</Text>
+            </Group>
+            <div style={{ width: '80px' }} />
           </Group>
 
           <Card withBorder shadow="lg" padding="xl">
