@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { Button, Stack, Card, Text } from "@mantine/core"
-import { AdditionGame } from "@/components/addition-game"
-import { SubtractionGame } from "@/components/subtraction-game"
-import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, type GameMode } from "@/utils/storage"
+import { AdditionGame } from "../components/addition-game"
+import { SubtractionGame } from "../components/subtraction-game"
+import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, type GameMode } from "../utils/storage"
 
 type Mode = GameMode | null
 

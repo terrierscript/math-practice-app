@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
-import { saveGameState, loadGameState, clearGameState, confirmClearData } from "@/utils/storage"
-import { generateSubtractionProblems, type Problem } from "@/utils/problems"
-import { GameCompletion } from "@/components/game-completion"
-import { formatTime } from "@/utils/time"
+import { saveGameState, loadGameState, clearGameState, confirmClearData } from "../utils/storage"
+import { generateSubtractionProblems, type Problem } from "../utils/problems"
+import { GameCompletion } from "./game-completion"
+import { formatTime } from "../utils/time"
 
 export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
   const [problems, setProblems] = useState<Problem[]>([])

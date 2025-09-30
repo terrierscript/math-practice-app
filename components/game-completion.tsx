@@ -1,5 +1,5 @@
 import { Button, Card, Text, Stack } from "@mantine/core"
-import { formatTime } from "@/utils/time"
+import { formatTime } from "../utils/time"
 
 interface GameCompletionProps {
   totalProblems: number
