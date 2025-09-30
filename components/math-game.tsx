@@ -87,15 +87,6 @@ export function MathGame({
     saveGameState(gameState)
   }, [mode, currentIndex, score, elapsedSeconds, problems, isReady, isCompleted])
 
-  const handleClearData = () => {
-    if (confirmClearData()) {
-      clearGameState()
-      if (onComplete) {
-        onComplete()
-      }
-    }
-  }
-
   const currentProblem = problems[currentIndex]
 
   const handleNumberClick = (num: number) => {
@@ -147,15 +138,7 @@ export function MathGame({
       <div style={{ width: '100%', maxWidth: '48rem' }}>
         <Stack gap="xl">
           <Group justify="space-between" align="center">
-            <Button
-              onClick={handleClearData}
-              size="xs"
-              color="red"
-              variant="outline"
-              radius="xl"
-            >
-              データ削除
-            </Button>
+            
             <Group gap="lg">
               <Text size="lg" c="dimmed">
                 {currentIndex + 1} / {problems.length}
