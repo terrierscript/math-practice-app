@@ -114,6 +114,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                 size="lg"
                 color="orange"
                 variant="filled"
+                radius="xl"
+                fullWidth
                 style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
               >
                 もう一度やる
@@ -124,6 +126,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                   size="lg"
                   color="blue"
                   variant="filled"
+                  radius="xl"
+                  fullWidth
                   style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
                 >
                   メニューに戻る
@@ -174,6 +178,7 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                   size="lg"
                   fullWidth
                   variant="filled"
+                  radius="xl"
                   color={
                     selectedAnswer === num
                       ? isWrong

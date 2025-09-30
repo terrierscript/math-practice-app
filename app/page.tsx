@@ -19,6 +19,8 @@ export default function MathPracticePage() {
             size="xl" 
             color="orange"
             variant="filled"
+            radius="xl"
+            fullWidth
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
           >
             たしざん
@@ -28,6 +30,8 @@ export default function MathPracticePage() {
             size="xl"
             color="blue"
             variant="filled"
+            radius="xl"
+            fullWidth
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
           >
             ひきざん
