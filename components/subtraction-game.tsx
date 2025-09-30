@@ -121,44 +121,19 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
               <Text size="xl">正解数: {score}問</Text>
               <Text size="xl">かかった時間: {formatTime(elapsedSeconds)}</Text>
             </Stack>
-            <Stack gap="md">
+            {onComplete && (
               <Button 
-                onClick={() => {
-                  clearGameState()
-                  setCurrentIndex(0)
-                  setScore(0)
-                  setElapsedSeconds(0)
-                  setIsCompleted(false)
-                  setSelectedAnswer(null)
-                  setIsWrong(false)
-                  
-                  // 新しい問題セットを生成
-                  const newProblems = generateSubtractionProblems()
-                  setProblems(newProblems)
-                }}
+                onClick={onComplete}
                 size="lg"
-                color="blue"
+                color="orange"
                 variant="filled"
                 radius="xl"
                 fullWidth
                 style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
               >
-                もう一度やる
+                メニューに戻る
               </Button>
-              {onComplete && (
-                <Button 
-                  onClick={onComplete}
-                  size="lg"
-                  color="orange"
-                  variant="filled"
-                  radius="xl"
-                  fullWidth
-                  style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
-                >
-                  メニューに戻る
-                </Button>
-              )}
-            </Stack>
+            )}
           </Stack>
         </Card>
       </div>
