@@ -5,6 +5,7 @@ import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
 import { saveGameState, loadGameState, clearGameState, confirmClearData } from "@/utils/storage"
 import { generateSubtractionProblems, type Problem } from "@/utils/problems"
 import { GameCompletion } from "@/components/game-completion"
+import { formatTime } from "@/utils/time"
 
 export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
   const [problems, setProblems] = useState<Problem[]>([])
@@ -71,12 +72,6 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
   }
 
   const currentProblem = problems[currentIndex]
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, "0")}`
-  }
 
   const handleNumberClick = (num: number) => {
     if (selectedAnswer === null) {
