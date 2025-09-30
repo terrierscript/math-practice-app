@@ -133,21 +133,8 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
                   setIsWrong(false)
                   
                   // 新しい問題セットを生成
-                  const allProblems: Problem[] = []
-                  for (let i = 0; i <= 9; i++) {
-                    for (let j = 0; j <= i; j++) {
-                      const result = i - j
-                      if (result >= 0 && result <= 9) {
-                        allProblems.push({
-                          num1: i,
-                          num2: j,
-                          answer: result,
-                        })
-                      }
-                    }
-                  }
-                  const shuffled = allProblems.sort(() => Math.random() - 0.5)
-                  setProblems(shuffled)
+                  const newProblems = generateSubtractionProblems()
+                  setProblems(newProblems)
                 }}
                 size="lg"
                 color="blue"
