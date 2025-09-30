@@ -16,12 +16,6 @@ export function GameCompletion({
   onComplete, 
   buttonColor = "blue" 
 }: GameCompletionProps) {
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = seconds % 60
-    return `${mins}:${secs.toString().padStart(2, "0")}`
-  }
-
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
       <Card withBorder shadow="lg" padding="xl" style={{ textAlign: 'center' }}>
