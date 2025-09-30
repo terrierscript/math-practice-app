@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
+import { saveGameState, loadGameState, clearGameState } from "@/utils/storage"
 
 type Problem = {
   num1: number
@@ -20,24 +21,37 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
   const [isCompleted, setIsCompleted] = useState(false)
 
   useEffect(() => {
-    const allProblems: Problem[] = []
+    // 保存された状態を確認
+    const savedState = loadGameState()
+    
+    if (savedState && savedState.mode === "subtraction") {
+      // 保存された状態を復元
+      setProblems(savedState.problems)
+      setCurrentIndex(savedState.currentIndex)
+      setScore(savedState.score)
+      setElapsedSeconds(savedState.elapsedSeconds)
+      setIsReady(true)
+    } else {
+      // 新しいゲームを開始
+      const allProblems: Problem[] = []
 
-    for (let i = 0; i <= 9; i++) {
-      for (let j = 0; j <= i; j++) {
-        const result = i - j
-        if (result >= 0 && result <= 9) {
-          allProblems.push({
-            num1: i,
-            num2: j,
-            answer: result,
-          })
+      for (let i = 0; i <= 9; i++) {
+        for (let j = 0; j <= i; j++) {
+          const result = i - j
+          if (result >= 0 && result <= 9) {
+            allProblems.push({
+              num1: i,
+              num2: j,
+              answer: result,
+            })
+          }
         }
       }
-    }
 
-    const shuffled = allProblems.sort(() => Math.random() - 0.5)
-    setProblems(shuffled)
-    setIsReady(true)
+      const shuffled = allProblems.sort(() => Math.random() - 0.5)
+      setProblems(shuffled)
+      setIsReady(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -49,6 +63,22 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
 
     return () => clearInterval(timer)
   }, [isReady])
+
+  // 状態が変更されるたびに保存
+  useEffect(() => {
+    if (!isReady || isCompleted || problems.length === 0) return
+
+    const gameState = {
+      mode: "subtraction" as const,
+      currentIndex,
+      score,
+      elapsedSeconds,
+      problems,
+      savedAt: Date.now()
+    }
+
+    saveGameState(gameState)
+  }, [currentIndex, score, elapsedSeconds, problems, isReady, isCompleted])
 
   const currentProblem = problems[currentIndex]
 
@@ -105,12 +135,30 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
             <Stack gap="md">
               <Button 
                 onClick={() => {
+                  clearGameState()
                   setCurrentIndex(0)
                   setScore(0)
                   setElapsedSeconds(0)
                   setIsCompleted(false)
                   setSelectedAnswer(null)
                   setIsWrong(false)
+                  
+                  // 新しい問題セットを生成
+                  const allProblems: Problem[] = []
+                  for (let i = 0; i <= 9; i++) {
+                    for (let j = 0; j <= i; j++) {
+                      const result = i - j
+                      if (result >= 0 && result <= 9) {
+                        allProblems.push({
+                          num1: i,
+                          num2: j,
+                          answer: result,
+                        })
+                      }
+                    }
+                  }
+                  const shuffled = allProblems.sort(() => Math.random() - 0.5)
+                  setProblems(shuffled)
                 }}
                 size="lg"
                 color="blue"

@@ -1,21 +1,63 @@
 "use client"
 
-import { useState } from "react"
-import { Button, Stack } from "@mantine/core"
+import { useState, useEffect } from "react"
+import { Button, Stack, Card, Text, Group } from "@mantine/core"
 import { AdditionGame } from "@/components/addition-game"
 import { SubtractionGame } from "@/components/subtraction-game"
+import { hasSavedState, getSavedStateInfo, loadGameState, clearGameState, type GameMode } from "@/utils/storage"
 
-type Mode = "addition" | "subtraction" | null
+type Mode = GameMode | null
 
 export default function MathPracticePage() {
   const [mode, setMode] = useState<Mode>(null)
+  const [savedStateInfo, setSavedStateInfo] = useState<ReturnType<typeof getSavedStateInfo>>(null)
+
+  useEffect(() => {
+    setSavedStateInfo(getSavedStateInfo())
+  }, [])
+
+  const handleContinue = () => {
+    const savedState = loadGameState()
+    if (savedState) {
+      setMode(savedState.mode)
+    }
+  }
+
+  const handleNewGame = (gameMode: GameMode) => {
+    clearGameState()
+    setMode(gameMode)
+  }
 
   if (mode === null) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
-        <Stack gap="xl">
+        <Stack gap="xl" style={{ width: '100%', maxWidth: '400px' }}>
+          {savedStateInfo && (
+            <Card withBorder shadow="md" padding="lg">
+              <Stack gap="sm">
+                <Text size="lg" fw="bold" c="green">
+                  前回の続きから始められます
+                </Text>
+                <Text c="dimmed">
+                  {savedStateInfo.mode === "addition" ? "たしざん" : "ひきざん"} - {savedStateInfo.progress} ({savedStateInfo.timeAgo}に保存)
+                </Text>
+                <Button
+                  onClick={handleContinue}
+                  size="lg"
+                  color="green"
+                  variant="filled"
+                  radius="xl"
+                  fullWidth
+                  style={{ height: '64px', fontSize: '1.5rem', fontWeight: 'bold' }}
+                >
+                  続きから始める
+                </Button>
+              </Stack>
+            </Card>
+          )}
+          
           <Button 
-            onClick={() => setMode("addition")} 
+            onClick={() => handleNewGame("addition")} 
             size="xl" 
             color="orange"
             variant="filled"
@@ -26,7 +68,7 @@ export default function MathPracticePage() {
             たしざん
           </Button>
           <Button
-            onClick={() => setMode("subtraction")}
+            onClick={() => handleNewGame("subtraction")}
             size="xl"
             color="blue"
             variant="filled"
@@ -42,8 +84,20 @@ export default function MathPracticePage() {
   }
 
   return mode === "addition" ? (
-    <AdditionGame onComplete={() => setMode(null)} />
+    <AdditionGame 
+      onComplete={() => {
+        clearGameState()
+        setMode(null)
+        setSavedStateInfo(null)
+      }} 
+    />
   ) : (
-    <SubtractionGame onComplete={() => setMode(null)} />
+    <SubtractionGame 
+      onComplete={() => {
+        clearGameState()
+        setMode(null)
+        setSavedStateInfo(null)
+      }} 
+    />
   )
 }
