@@ -113,6 +113,8 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
                   setIsWrong(false)
                 }}
                 size="lg"
+                color="blue"
+                variant="filled"
                 style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
               >
                 もう一度やる
@@ -121,7 +123,8 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
                 <Button 
                   onClick={onComplete}
                   size="lg"
-                  variant="outline"
+                  color="orange"
+                  variant="filled"
                   style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
                 >
                   メニューに戻る
@@ -171,19 +174,13 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
                   onClick={() => handleNumberClick(num)}
                   size="lg"
                   fullWidth
-                  variant={
-                    selectedAnswer === num
-                      ? isWrong
-                        ? "filled"
-                        : "filled"
-                      : "light"
-                  }
+                  variant="filled"
                   color={
                     selectedAnswer === num
                       ? isWrong
                         ? "red"
                         : "blue"
-                      : "gray"
+                      : "blue"
                   }
                   style={{
                     height: '4rem',

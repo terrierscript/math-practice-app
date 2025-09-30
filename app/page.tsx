@@ -17,6 +17,8 @@ export default function MathPracticePage() {
           <Button 
             onClick={() => setMode("addition")} 
             size="xl" 
+            color="orange"
+            variant="filled"
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
           >
             たしざん
@@ -24,7 +26,8 @@ export default function MathPracticePage() {
           <Button
             onClick={() => setMode("subtraction")}
             size="xl"
-            variant="light"
+            color="blue"
+            variant="filled"
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
           >
             ひきざん

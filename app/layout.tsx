@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
-import './global-styles.css'
 
 export const metadata: Metadata = {
   title: 'v0 App',
@@ -19,7 +18,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
+      <body style={{ margin: 0, padding: 0, fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif' }}>
         <MantineProvider>
           {children}
         </MantineProvider>

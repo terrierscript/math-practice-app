@@ -112,6 +112,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                   setIsWrong(false)
                 }}
                 size="lg"
+                color="orange"
+                variant="filled"
                 style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
               >
                 もう一度やる
@@ -120,7 +122,8 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                 <Button 
                   onClick={onComplete}
                   size="lg"
-                  variant="outline"
+                  color="blue"
+                  variant="filled"
                   style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
                 >
                   メニューに戻る
@@ -170,19 +173,13 @@ export function AdditionGame({ onComplete }: { onComplete?: () => void }) {
                   onClick={() => handleNumberClick(num)}
                   size="lg"
                   fullWidth
-                  variant={
-                    selectedAnswer === num
-                      ? isWrong
-                        ? "filled"
-                        : "filled"
-                      : "light"
-                  }
+                  variant="filled"
                   color={
                     selectedAnswer === num
                       ? isWrong
                         ? "red"
                         : "blue"
-                      : "gray"
+                      : "orange"
                   }
                   style={{
                     height: '4rem',
