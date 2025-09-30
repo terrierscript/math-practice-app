@@ -51,14 +51,14 @@ export function MathGame({
   }, [])
 
   useEffect(() => {
-    if (!isReady) return
+    if (!isReady || isCompleted) return
 
     const timer = setInterval(() => {
       setElapsedSeconds((prev) => prev + 1)
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isReady])
+  }, [isReady, isCompleted])
 
   // 状態が変更されるたびに外部に通知
   useEffect(() => {
