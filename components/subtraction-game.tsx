@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { Button, Card, Text, Stack, Group, Grid } from "@mantine/core"
 
 type Problem = {
   num1: number
@@ -85,98 +84,121 @@ export function SubtractionGame({ onComplete }: { onComplete?: () => void }) {
 
   if (!isReady || !currentProblem) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-2xl font-bold">読み込み中...</p>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Text size="xl" fw="bold">読み込み中...</Text>
       </div>
     )
   }
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <Card className="p-8 md:p-12 bg-card shadow-lg text-center space-y-6">
-          <div className="text-6xl">🎉</div>
-          <h2 className="text-4xl font-bold text-primary">おつかれさまでした！</h2>
-          <div className="text-2xl space-y-2">
-            <p>全{problems.length}問完了！</p>
-            <p>正解数: {score}問</p>
-            <p>かかった時間: {formatTime(elapsedSeconds)}</p>
-          </div>
-          <div className="space-y-4">
-            <Button 
-              onClick={() => {
-                setCurrentIndex(0)
-                setScore(0)
-                setElapsedSeconds(0)
-                setIsCompleted(false)
-                setSelectedAnswer(null)
-                setIsWrong(false)
-              }}
-              size="lg"
-              className="h-16 px-8 text-2xl font-bold"
-            >
-              もう一度やる
-            </Button>
-            {onComplete && (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+        <Card withBorder shadow="lg" padding="xl" style={{ textAlign: 'center' }}>
+          <Stack gap="lg">
+            <Text size="4rem">🎉</Text>
+            <Text size="2xl" fw="bold" c="blue">おつかれさまでした！</Text>
+            <Stack gap="sm">
+              <Text size="xl">全{problems.length}問完了！</Text>
+              <Text size="xl">正解数: {score}問</Text>
+              <Text size="xl">かかった時間: {formatTime(elapsedSeconds)}</Text>
+            </Stack>
+            <Stack gap="md">
               <Button 
-                onClick={onComplete}
+                onClick={() => {
+                  setCurrentIndex(0)
+                  setScore(0)
+                  setElapsedSeconds(0)
+                  setIsCompleted(false)
+                  setSelectedAnswer(null)
+                  setIsWrong(false)
+                }}
                 size="lg"
-                variant="outline"
-                className="h-16 px-8 text-2xl font-bold"
+                style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
               >
-                メニューに戻る
+                もう一度やる
               </Button>
-            )}
-          </div>
+              {onComplete && (
+                <Button 
+                  onClick={onComplete}
+                  size="lg"
+                  variant="outline"
+                  style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
+                >
+                  メニューに戻る
+                </Button>
+              )}
+            </Stack>
+          </Stack>
         </Card>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background p-4">
-      <div className="w-full max-w-2xl space-y-8">
-        <div className="flex items-center justify-center gap-4 text-xl text-muted-foreground">
-          <p>
-            {currentIndex + 1} / {problems.length}
-          </p>
-          <span>|</span>
-          <p>{formatTime(elapsedSeconds)}</p>
-        </div>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+      <div style={{ width: '100%', maxWidth: '48rem' }}>
+        <Stack gap="xl">
+          <Group justify="center" gap="lg">
+            <Text size="lg" c="dimmed">
+              {currentIndex + 1} / {problems.length}
+            </Text>
+            <Text size="lg" c="dimmed">|</Text>
+            <Text size="lg" c="dimmed">{formatTime(elapsedSeconds)}</Text>
+          </Group>
 
-        <Card className="p-8 md:p-12 bg-card shadow-lg">
-          <div className="text-center">
-            <div
-              className={`text-6xl md:text-8xl font-bold transition-colors ${
-                isWrong ? "text-destructive" : "text-foreground"
-              }`}
+          <Card withBorder shadow="lg" padding="xl">
+            <Text 
+              size="4rem" 
+              fw="bold" 
+              ta="center"
+              c={isWrong ? "red" : undefined}
+              style={{ 
+                fontSize: 'clamp(3rem, 8vw, 5rem)',
+                transition: 'color 0.2s'
+              }}
             >
               {currentProblem.num1} - {currentProblem.num2} ={" "}
-              <span className={selectedAnswer !== null ? (isWrong ? "text-destructive" : "text-primary") : ""}>
+              <span style={{ color: selectedAnswer !== null ? (isWrong ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-blue-6)') : 'inherit' }}>
                 {selectedAnswer !== null ? selectedAnswer : "?"}
               </span>
-            </div>
-          </div>
-        </Card>
+            </Text>
+          </Card>
 
-        <div className="grid grid-cols-5 gap-3 md:gap-4">
-          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-            <Button
-              key={num}
-              onClick={() => handleNumberClick(num)}
-              size="lg"
-              className={`h-16 md:h-20 text-3xl md:text-4xl font-bold transition-all ${
-                selectedAnswer === num
-                  ? isWrong
-                    ? "bg-destructive hover:bg-destructive text-destructive-foreground scale-110"
-                    : "bg-primary hover:bg-primary text-primary-foreground scale-110"
-                  : "bg-accent hover:bg-accent/90 text-accent-foreground"
-              }`}
-            >
-              {num}
-            </Button>
-          ))}
-        </div>
+          <Grid gutter="md">
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+              <Grid.Col span={{ base: 6, xs: 4, sm: 2.4 }} key={num}>
+                <Button
+                  onClick={() => handleNumberClick(num)}
+                  size="lg"
+                  fullWidth
+                  variant={
+                    selectedAnswer === num
+                      ? isWrong
+                        ? "filled"
+                        : "filled"
+                      : "light"
+                  }
+                  color={
+                    selectedAnswer === num
+                      ? isWrong
+                        ? "red"
+                        : "blue"
+                      : "gray"
+                  }
+                  style={{
+                    height: '4rem',
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    transform: selectedAnswer === num ? 'scale(1.1)' : 'scale(1)',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  {num}
+                </Button>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Stack>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { Button, Stack } from "@mantine/core"
 import { AdditionGame } from "@/components/addition-game"
 import { SubtractionGame } from "@/components/subtraction-game"
 
@@ -12,20 +12,24 @@ export default function MathPracticePage() {
 
   if (mode === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background p-4">
-        <div className="flex flex-col gap-6">
-          <Button onClick={() => setMode("addition")} size="lg" className="h-20 px-12 text-4xl font-bold">
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+        <Stack gap="xl">
+          <Button 
+            onClick={() => setMode("addition")} 
+            size="xl" 
+            style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
+          >
             たしざん
           </Button>
           <Button
             onClick={() => setMode("subtraction")}
-            size="lg"
-            className="h-20 px-12 text-4xl font-bold"
-            variant="secondary"
+            size="xl"
+            variant="light"
+            style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
           >
             ひきざん
           </Button>
-        </div>
+        </Stack>
       </div>
     )
   }

@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
-import { GeistSans } from 'geist/font/sans'
-import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
-import './globals.css'
+import { ColorSchemeScript, MantineProvider } from '@mantine/core'
+import './global-styles.css'
 
 export const metadata: Metadata = {
   title: 'v0 App',
@@ -16,9 +15,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        {children}
+    <html lang="ja">
+      <head>
+        <ColorSchemeScript />
+      </head>
+      <body>
+        <MantineProvider>
+          {children}
+        </MantineProvider>
         <Analytics />
       </body>
     </html>
