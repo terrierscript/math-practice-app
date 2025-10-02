@@ -84,14 +84,6 @@ export function GameRecords() {
         <Stack gap="lg">
           <Group justify="space-between" align="center">
             <Text size="xl" fw="bold">📊 ゲーム記録</Text>
-            <Button 
-              onClick={handleClearRecords}
-              size="sm"
-              color="red"
-              variant="light"
-            >
-              記録削除
-            </Button>
           </Group>
 
           {/* 統計情報 */}
