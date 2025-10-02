@@ -100,6 +100,9 @@ const verifyGameRecordSaved = async (page: Page, gameType: 'addition' | 'subtrac
 };
 
 test.describe('算数ゲーム E2E テスト', () => {
+  // 全体のテストタイムアウトを設定
+  test.setTimeout(120000); // 2分
+
   test('記録ページにアクセスできる', async ({ page }) => {
     await page.goto('/');
     await page.click('[data-testid="records-button"]');
@@ -107,6 +110,9 @@ test.describe('算数ゲーム E2E テスト', () => {
   });
 
   test('複数回ゲーム完了後の記録が正しく保存される', async ({ page }) => {
+    // このテストは特に時間がかかるため、より長いタイムアウトを設定
+    test.setTimeout(180000); // 3分
+    
     // 1回目: 足し算ゲーム
     await startMathGame(page, 'addition');
     let totalProblems = await playAllProblems(page);

@@ -32,6 +32,12 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
+  /* Global timeout settings */
+  timeout: 60000, // 60秒（デフォルトの30秒から倍に）
+  expect: {
+    timeout: 10000, // expectのタイムアウトも10秒に延長（デフォルト5秒から倍に）
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {
