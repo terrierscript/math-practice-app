@@ -1,10 +1,10 @@
+"use client"
 import { Card, Text, Stack, Group, Badge, Divider, Button, ScrollArea, Center } from "@mantine/core"
 import Link from "next/link"
 import { formatTime } from "../utils/time"
 import { type GameRecord, type GameMode, getGameRecords, getGameStatistics, clearGameRecords, confirmClearRecords } from "../utils/storage"
 import { useState, useEffect } from "react"
 
-interface GameRecordsProps {}
 
 export function GameRecords() {
   const [records, setRecords] = useState<GameRecord[]>([])
