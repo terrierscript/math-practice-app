@@ -7,7 +7,7 @@ import { GameCompletion } from "./game-completion"
 import { NumberPad } from "./number-pad"
 import { ProblemDisplay } from "./problem-display"
 import { formatTime } from "../utils/time"
-import { type GameMode, type GameState } from "../utils/storage"
+import { type GameMode, type GameState, type ProblemResult } from "../utils/storage"
 
 interface MathGameProps {
   mode: GameMode
@@ -40,6 +40,8 @@ export function MathGame({
   const [score, setScore] = useState(initialState?.score ?? 0)
   const [elapsedSeconds, setElapsedSeconds] = useState(initialState?.elapsedSeconds ?? 0)
   const [isCompleted, setIsCompleted] = useState(false)
+  const [problemResults, setProblemResults] = useState<ProblemResult[]>(initialState?.problemResults ?? [])
+  const [hasWrongAnswer, setHasWrongAnswer] = useState(false) // 現在の問題で間違えたかどうか
 
   // 初期化完了をマーク
   const [isReady, setIsReady] = useState(false)
@@ -67,11 +69,12 @@ export function MathGame({
       currentIndex,
       score,
       elapsedSeconds,
-      problems
+      problems,
+      problemResults
     }
 
     onStateChange?.(gameState)
-  }, [mode, currentIndex, score, elapsedSeconds, problems, isReady, isCompleted, onStateChange])
+  }, [mode, currentIndex, score, elapsedSeconds, problems, problemResults, isReady, isCompleted, onStateChange])
 
   const currentProblem = problems[currentIndex]
 
@@ -81,9 +84,23 @@ export function MathGame({
       setIsWrong(false)
     } else if (selectedAnswer === num) {
       if (num === currentProblem.answer) {
-        setScore(score + 1)
+        // 正解の場合
+        const result: ProblemResult = {
+          problem: currentProblem,
+          isCorrect: !hasWrongAnswer // 一度でも間違えていたらfalse
+        }
+        
+        // 一度も間違えずに正解した場合のみスコアに加算
+        if (!hasWrongAnswer) {
+          setScore(score + 1)
+        }
+        
+        const newResults = [...problemResults, result]
+        setProblemResults(newResults)
+        
         setSelectedAnswer(null)
         setIsWrong(false)
+        setHasWrongAnswer(false) // 次の問題に向けてリセット
 
         if (currentIndex < problems.length - 1) {
           setCurrentIndex(currentIndex + 1)
@@ -91,7 +108,9 @@ export function MathGame({
           setIsCompleted(true)
         }
       } else {
+        // 不正解の場合
         setIsWrong(true)
+        setHasWrongAnswer(true)
       }
     } else {
       setSelectedAnswer(num)
@@ -113,6 +132,7 @@ export function MathGame({
         totalProblems={problems.length}
         score={score}
         elapsedSeconds={elapsedSeconds}
+        problemResults={problemResults}
         onComplete={onComplete}
         buttonColor={buttonColor}
       />
@@ -124,7 +144,6 @@ export function MathGame({
       <div style={{ width: '100%', maxWidth: '48rem' }}>
         <Stack gap="xl">
           <Group justify="space-between" align="center">
-            
             <Group gap="lg">
               <Text size="lg" c="dimmed">
                 {currentIndex + 1} / {problems.length}
@@ -132,7 +151,14 @@ export function MathGame({
               <Text size="lg" c="dimmed">|</Text>
               <Text size="lg" c="dimmed">{formatTime(elapsedSeconds)}</Text>
             </Group>
-            <div style={{ width: '80px' }} />
+            <Group gap="lg">
+              <Text size="sm" c="green" fw="bold">
+                正解: {problemResults.filter(r => r.isCorrect).length}問
+              </Text>
+              <Text size="sm" c="red" fw="bold">
+                間違い: {problemResults.filter(r => !r.isCorrect).length}問
+              </Text>
+            </Group>
           </Group>
 
           <ProblemDisplay

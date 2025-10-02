@@ -3,12 +3,19 @@ import { type Problem } from "./problems"
 // ゲーム状態の型定義
 export type GameMode = "addition" | "subtraction"
 
+// 問題の結果を記録する型
+export interface ProblemResult {
+  problem: Problem
+  isCorrect: boolean // 一度でも間違えた場合はfalse
+}
+
 export interface GameState {
   mode: GameMode
   currentIndex: number
   score: number
   elapsedSeconds: number
   problems: Problem[]
+  problemResults: ProblemResult[] // 問題ごとの結果
   savedAt: number // タイムスタンプ
 }
 
@@ -99,6 +106,22 @@ function formatTimeAgo(ms: number): string {
     return `${minutes}分前`
   } else {
     return "今"
+  }
+}
+
+// スコア計算関数
+export function calculateScore(problemResults: ProblemResult[]): {
+  totalProblems: number
+  correctProblems: number
+  correctRate: number
+} {
+  const totalProblems = problemResults.length
+  const correctProblems = problemResults.filter(result => result.isCorrect).length
+  
+  return {
+    totalProblems,
+    correctProblems,
+    correctRate: totalProblems > 0 ? Math.round((correctProblems / totalProblems) * 100) : 0
   }
 }
 
