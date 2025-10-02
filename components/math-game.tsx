@@ -6,7 +6,7 @@ import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { ProblemManager } from "./problem-manager"
 import { formatTime } from "../utils/time"
-import { type GameMode, type GameState, type ProblemResult } from "../utils/storage"
+import { type GameMode, type GameState, type ProblemResult, saveGameRecord, calculateScore } from "../utils/storage"
 
 interface MathGameProps {
   mode: GameMode
@@ -91,6 +91,9 @@ export function MathGame({
     if (currentIndex < problems.length - 1) {
       setCurrentIndex(currentIndex + 1)
     } else {
+      // ゲーム完了時に記録を保存
+      const scoreData = calculateScore(newResults)
+      saveGameRecord(mode, problems.length, scoreData.correctProblems, elapsedSeconds, newResults)
       setIsCompleted(true)
     }
   }
