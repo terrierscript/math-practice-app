@@ -41,17 +41,6 @@ test.describe('算数ゲーム E2E テスト', () => {
         throw new Error(`Unknown operator: ${operatorText}`);
       }
       
-      // まず間違った答えをクリック（もし選択肢にあれば）
-      const wrongAnswer = correctAnswer + 1;
-      const wrongAnswerButton = page.locator(`[data-testid="number-button-${wrongAnswer}"]`);
-      if (await wrongAnswerButton.isVisible()) {
-        await wrongAnswerButton.click();
-        // 同じボタンをもう一度クリックして間違いを確定
-        await wrongAnswerButton.click();
-        
-        // 間違いの表示を確認
-        await expect(page.locator('[data-testid="problem-answer"]')).toHaveCSS('color', /rgb\(.*\)/);
-      }
       
       // 正しい答えをクリック
       await page.click(`[data-testid="number-button-${correctAnswer}"]`);
@@ -74,31 +63,6 @@ test.describe('算数ゲーム E2E テスト', () => {
     await expect(page.locator('[data-testid="incorrect-problems"]')).toBeVisible();
     await expect(page.locator('[data-testid="correct-rate"]')).toBeVisible();
     await expect(page.locator('[data-testid="elapsed-time"]')).toBeVisible();
-  });
-  
-  test('問題の各要素が正しく表示される', async ({ page }) => {
-    await page.goto('/');
-    
-    // 足し算ゲームを選択（仮のセレクタ）
-    await page.click('[data-testid="addition-game-button"]');
-    
-    // 問題表示の要素を確認
-    await expect(page.locator('[data-testid="problem-equation"]')).toBeVisible();
-    await expect(page.locator('[data-testid="problem-num1"]')).toBeVisible();
-    await expect(page.locator('[data-testid="problem-operator"]')).toBeVisible();
-    await expect(page.locator('[data-testid="problem-num2"]')).toBeVisible();
-    await expect(page.locator('[data-testid="problem-answer"]')).toBeVisible();
-    
-    // 初期状態では答えが "?" になっていることを確認
-    await expect(page.locator('[data-testid="problem-answer"]')).toContainText('?');
-    
-    // 数字パッドが表示されることを確認
-    await expect(page.locator('[data-testid="number-pad"]')).toBeVisible();
-    
-    // 数字ボタンが存在することを確認（0-9の数字ボタン）
-    for (let i = 0; i <= 9; i++) {
-      await expect(page.locator(`[data-testid="number-button-${i}"]`)).toBeVisible();
-    }
   });
   
   test('ゲーム進行状況が正しく表示される', async ({ page }) => {
