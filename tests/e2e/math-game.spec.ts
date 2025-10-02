@@ -76,6 +76,29 @@ const verifyGameCompletion = async (page: Page, totalProblems: number) => {
   await expect(page.locator('[data-testid="elapsed-time"]')).toBeVisible();
 };
 
+const verifyGameRecordSaved = async (page: Page, gameType: 'addition' | 'subtraction', totalProblems: number) => {
+  // メニューに戻る
+  await page.click('[data-testid="back-to-menu-button"]');
+  await expect(page.locator('[data-testid="main-menu"]')).toBeVisible();
+  
+  // 記録ページに移動
+  await page.click('[data-testid="records-button"]');
+  await expect(page).toHaveURL('/scores');
+  
+  // 記録が保存されていることを確認
+  await expect(page.locator('text=統計情報')).toBeVisible();
+  await expect(page.locator('text=過去の記録')).toBeVisible();
+  
+  // 最新の記録が表示されていることを確認
+  const gameTypeText = gameType === 'addition' ? '足し算' : '引き算';
+  await expect(page.locator(`text=${gameTypeText}`).first()).toBeVisible();
+  
+  // 記録の詳細が表示されていることを確認
+  await expect(page.locator('text=正解率')).toBeVisible();
+  await expect(page.locator('text=正解数')).toBeVisible();
+  await expect(page.locator('text=所要時間')).toBeVisible();
+};
+
 test.describe('算数ゲーム E2E テスト', () => {
   test('記録ページにアクセスできる', async ({ page }) => {
     await page.goto('/');
@@ -83,16 +106,59 @@ test.describe('算数ゲーム E2E テスト', () => {
     await expect(page).toHaveURL('/scores');
   });
 
+  test('複数回ゲーム完了後の記録が正しく保存される', async ({ page }) => {
+    // 1回目: 足し算ゲーム
+    await startMathGame(page, 'addition');
+    let totalProblems = await playAllProblems(page);
+    await verifyGameCompletion(page, totalProblems);
+    await page.click('[data-testid="back-to-menu-button"]');
+    
+    // 2回目: 引き算ゲーム
+    await startMathGame(page, 'subtraction');
+    totalProblems = await playAllProblems(page);
+    await verifyGameCompletion(page, totalProblems);
+    await page.click('[data-testid="back-to-menu-button"]');
+    
+    // 記録ページで複数の記録が確認できることをテスト
+    await page.click('[data-testid="records-button"]');
+    await expect(page).toHaveURL('/scores');
+    
+    // 統計情報で総ゲーム数が2回になっていることを確認
+    await expect(page.locator('text=2回')).toBeVisible();
+    
+    // 両方のゲームタイプの記録があることを確認
+    await expect(page.locator('text=足し算')).toBeVisible();
+    await expect(page.locator('text=引き算')).toBeVisible();
+  });
+
+  test('記録が空の場合の表示を確認', async ({ page }) => {
+    // localStorageをクリアして空の状態にする
+    await page.goto('/');
+    await page.evaluate(() => {
+      localStorage.removeItem('mathPracticeGameRecords');
+    });
+    
+    // 記録ページにアクセス
+    await page.click('[data-testid="records-button"]');
+    await expect(page).toHaveURL('/scores');
+    
+    // 空の状態のメッセージが表示されることを確認
+    await expect(page.locator('text=まだ記録がありません')).toBeVisible();
+    await expect(page.locator('text=ゲームを完了すると記録が保存されます')).toBeVisible();
+  });
+
   test('足し算ゲームを最後まで完了できる', async ({ page }) => {
     await startMathGame(page, 'addition');
     const totalProblems = await playAllProblems(page);
     await verifyGameCompletion(page, totalProblems);
+    await verifyGameRecordSaved(page, 'addition', totalProblems);
   });
 
   test('引き算ゲームを最後まで完了できる', async ({ page }) => {
     await startMathGame(page, 'subtraction');
     const totalProblems = await playAllProblems(page);
     await verifyGameCompletion(page, totalProblems);
+    await verifyGameRecordSaved(page, 'subtraction', totalProblems);
   });
   
   test.describe('足し算ゲーム', () => {
