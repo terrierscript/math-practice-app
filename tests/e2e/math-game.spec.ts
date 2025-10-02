@@ -77,6 +77,12 @@ const verifyGameCompletion = async (page: Page, totalProblems: number) => {
 };
 
 test.describe('算数ゲーム E2E テスト', () => {
+  test('記録ページにアクセスできる', async ({ page }) => {
+    await page.goto('/');
+    await page.click('[data-testid="records-button"]');
+    await expect(page).toHaveURL('/scores');
+  });
+
   test('足し算ゲームを最後まで完了できる', async ({ page }) => {
     await startMathGame(page, 'addition');
     const totalProblems = await playAllProblems(page);
