@@ -118,21 +118,21 @@ export function MathGame({
 
   return (
     <Center style={{ minHeight: '100vh', padding: '1rem' }}>
-      <div style={{ width: '100%', maxWidth: '48rem' }}>
+      <div style={{ width: '100%', maxWidth: '48rem' }} data-testid="math-game">
         <Stack gap="xl">
-          <Group justify="space-between" align="center">
-            <Group gap="lg">
-              <Text size="lg" c="dimmed">
+          <Group justify="space-between" align="center" data-testid="game-header">
+            <Group gap="lg" data-testid="game-progress">
+              <Text size="lg" c="dimmed" data-testid="problem-counter">
                 {currentIndex + 1} / {problems.length}
               </Text>
               <Text size="lg" c="dimmed">|</Text>
-              <Text size="lg" c="dimmed">{formatTime(elapsedSeconds)}</Text>
+              <Text size="lg" c="dimmed" data-testid="elapsed-time">{formatTime(elapsedSeconds)}</Text>
             </Group>
-            <Group gap="lg">
-              <Text size="sm" c="green" fw="bold">
+            <Group gap="lg" data-testid="game-stats">
+              <Text size="sm" c="green" fw="bold" data-testid="correct-count">
                 正解: {problemResults.filter(r => r.isCorrect).length}問
               </Text>
-              <Text size="sm" c="red" fw="bold">
+              <Text size="sm" c="red" fw="bold" data-testid="incorrect-count">
                 間違い: {problemResults.filter(r => !r.isCorrect).length}問
               </Text>
             </Group>

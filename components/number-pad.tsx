@@ -20,7 +20,7 @@ export function NumberPad({
   selectedWrongColor = "red"
 }: NumberPadProps) {
   return (
-    <Grid gutter="md">
+    <Grid gutter="md" data-testid="number-pad">
       {numbers.map((num) => (
         <Grid.Col span={{ base: 6, xs: 4, sm: 2.4 }} key={num}>
           <Button
@@ -43,6 +43,7 @@ export function NumberPad({
               transform: selectedAnswer === num ? 'scale(1.1)' : 'scale(1)',
               transition: 'all 0.2s'
             }}
+            data-testid={`number-button-${num}`}
           >
             {num}
           </Button>

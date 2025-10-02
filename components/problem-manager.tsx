@@ -47,7 +47,7 @@ export function ProblemManager({
   }
 
   return (
-    <Stack gap="xl">
+    <Stack gap="xl" data-testid="problem-manager">
       <ProblemDisplay
         num1={problem.num1}
         num2={problem.num2}

@@ -1,4 +1,4 @@
-import { Card, Text } from "@mantine/core"
+import { Card, Text, Group } from "@mantine/core"
 
 interface ProblemDisplayProps {
   num1: number
@@ -16,22 +16,76 @@ export function ProblemDisplay({
   isWrong
 }: ProblemDisplayProps) {
   return (
-    <Card withBorder shadow="lg" padding="xl">
-      <Text 
-        size="4rem" 
-        fw="bold" 
-        ta="center"
-        c={isWrong ? "red" : undefined}
-        style={{ 
+    <Card withBorder shadow="lg" padding="xl" data-testid="problem-display">
+      <Group 
+        gap="xs" 
+        justify="center" 
+        data-testid="problem-equation"
+        style={{
           fontSize: 'clamp(3rem, 8vw, 5rem)',
-          transition: 'color 0.2s'
+          fontWeight: 'bold',
         }}
       >
-        {num1} {operator} {num2} ={" "}
-        <span style={{ color: selectedAnswer !== null ? (isWrong ? 'var(--mantine-color-red-6)' : 'var(--mantine-color-blue-6)') : 'inherit' }}>
+        <Text 
+          size="4rem"
+          fw="bold"
+          c={isWrong ? "red" : undefined}
+          style={{ 
+            fontSize: 'inherit',
+            transition: 'color 0.2s'
+          }}
+          data-testid="problem-num1"
+        >
+          {num1}
+        </Text>
+        <Text 
+          size="4rem"
+          fw="bold"
+          c={isWrong ? "red" : undefined}
+          style={{ 
+            fontSize: 'inherit',
+            transition: 'color 0.2s'
+          }}
+          data-testid="problem-operator"
+        >
+          {operator}
+        </Text>
+        <Text 
+          size="4rem"
+          fw="bold"
+          c={isWrong ? "red" : undefined}
+          style={{ 
+            fontSize: 'inherit',
+            transition: 'color 0.2s'
+          }}
+          data-testid="problem-num2"
+        >
+          {num2}
+        </Text>
+        <Text 
+          size="4rem"
+          fw="bold"
+          c={isWrong ? "red" : undefined}
+          style={{ 
+            fontSize: 'inherit',
+            transition: 'color 0.2s'
+          }}
+        >
+          =
+        </Text>
+        <Text 
+          size="4rem"
+          fw="bold"
+          c={selectedAnswer !== null ? (isWrong ? 'red' : 'blue') : (isWrong ? "red" : undefined)}
+          style={{ 
+            fontSize: 'inherit',
+            transition: 'color 0.2s'
+          }}
+          data-testid="problem-answer"
+        >
           {selectedAnswer !== null ? selectedAnswer : "?"}
-        </span>
-      </Text>
+        </Text>
+      </Group>
     </Card>
   )
 }

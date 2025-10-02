@@ -38,14 +38,14 @@ export default function MathPracticePage() {
   if (mode === null) {
     return (
       <Center style={{ minHeight: '100vh', padding: '1rem' }}>
-        <Stack gap="xl" style={{ width: '100%', maxWidth: '400px' }}>
+        <Stack gap="xl" style={{ width: '100%', maxWidth: '400px' }} data-testid="main-menu">
           {savedStateInfo && (
-            <Card withBorder shadow="md" padding="lg">
+            <Card withBorder shadow="md" padding="lg" data-testid="continue-game-card">
               <Stack gap="sm">
                 <Text size="lg" fw="bold" c="green">
                   前回の続きから始められます
                 </Text>
-                <Text c="dimmed">
+                <Text c="dimmed" data-testid="saved-game-info">
                   {savedStateInfo.mode === "addition" ? "たしざん" : "ひきざん"} - {savedStateInfo.progress} ({savedStateInfo.timeAgo}に保存)
                 </Text>
                 <Button
@@ -56,6 +56,7 @@ export default function MathPracticePage() {
                   radius="xl"
                   fullWidth
                   style={{ height: '64px', fontSize: '1.5rem', fontWeight: 'bold' }}
+                  data-testid="continue-game-button"
                 >
                   続きから始める
                 </Button>
@@ -71,6 +72,7 @@ export default function MathPracticePage() {
             radius="xl"
             fullWidth
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
+            data-testid="addition-game-button"
           >
             たしざん
           </Button>
@@ -82,6 +84,7 @@ export default function MathPracticePage() {
             radius="xl"
             fullWidth
             style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
+            data-testid="subtraction-game-button"
           >
             ひきざん
           </Button>
@@ -95,6 +98,7 @@ export default function MathPracticePage() {
               radius="xl"
               fullWidth
               style={{ height: '48px', fontSize: '1rem', fontWeight: 'bold', marginTop: '1rem' }}
+              data-testid="clear-data-button"
             >
               保存データを削除
             </Button>
