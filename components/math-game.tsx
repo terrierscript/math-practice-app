@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import { Button, Text, Stack, Group, Center } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
-import { NumberPad } from "./number-pad"
-import { ProblemDisplay } from "./problem-display"
+import { ProblemManager } from "./problem-manager"
 import { formatTime } from "../utils/time"
 import { type GameMode, type GameState, type ProblemResult } from "../utils/storage"
 
@@ -35,13 +34,10 @@ export function MathGame({
   onStateChange
 }: MathGameProps) {
   const [currentIndex, setCurrentIndex] = useState(initialState?.currentIndex ?? 0)
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
-  const [isWrong, setIsWrong] = useState(false)
   const [score, setScore] = useState(initialState?.score ?? 0)
   const [elapsedSeconds, setElapsedSeconds] = useState(initialState?.elapsedSeconds ?? 0)
   const [isCompleted, setIsCompleted] = useState(false)
   const [problemResults, setProblemResults] = useState<ProblemResult[]>(initialState?.problemResults ?? [])
-  const [hasWrongAnswer, setHasWrongAnswer] = useState(false) // 現在の問題で間違えたかどうか
 
   // 初期化完了をマーク
   const [isReady, setIsReady] = useState(false)
@@ -78,43 +74,24 @@ export function MathGame({
 
   const currentProblem = problems[currentIndex]
 
-  const handleNumberClick = (num: number) => {
-    if (selectedAnswer === null) {
-      setSelectedAnswer(num)
-      setIsWrong(false)
-    } else if (selectedAnswer === num) {
-      if (num === currentProblem.answer) {
-        // 正解の場合
-        const result: ProblemResult = {
-          problem: currentProblem,
-          isCorrect: !hasWrongAnswer // 一度でも間違えていたらfalse
-        }
-        
-        // 一度も間違えずに正解した場合のみスコアに加算
-        if (!hasWrongAnswer) {
-          setScore(score + 1)
-        }
-        
-        const newResults = [...problemResults, result]
-        setProblemResults(newResults)
-        
-        setSelectedAnswer(null)
-        setIsWrong(false)
-        setHasWrongAnswer(false) // 次の問題に向けてリセット
+  const handleCorrect = (hasWrongAnswer: boolean) => {
+    const result: ProblemResult = {
+      problem: currentProblem,
+      isCorrect: !hasWrongAnswer // 一度でも間違えていたらfalse
+    }
+    
+    // 一度も間違えずに正解した場合のみスコアに加算
+    if (!hasWrongAnswer) {
+      setScore(score + 1)
+    }
+    
+    const newResults = [...problemResults, result]
+    setProblemResults(newResults)
 
-        if (currentIndex < problems.length - 1) {
-          setCurrentIndex(currentIndex + 1)
-        } else {
-          setIsCompleted(true)
-        }
-      } else {
-        // 不正解の場合
-        setIsWrong(true)
-        setHasWrongAnswer(true)
-      }
+    if (currentIndex < problems.length - 1) {
+      setCurrentIndex(currentIndex + 1)
     } else {
-      setSelectedAnswer(num)
-      setIsWrong(false)
+      setIsCompleted(true)
     }
   }
 
@@ -161,22 +138,14 @@ export function MathGame({
             </Group>
           </Group>
 
-          <ProblemDisplay
-            num1={currentProblem.num1}
-            num2={currentProblem.num2}
-            operator={currentProblem.operator}
-            selectedAnswer={selectedAnswer}
-            isWrong={isWrong}
-          />
-
-          <NumberPad
+          <ProblemManager
+            key={currentIndex} // キーを指定することで問題が変わったときにコンポーネントを再マウント
+            problem={currentProblem}
             numbers={numbers}
-            selectedAnswer={selectedAnswer}
-            isWrong={isWrong}
-            onNumberClick={handleNumberClick}
             baseColor={baseColor}
             selectedCorrectColor={selectedCorrectColor}
             selectedWrongColor={selectedWrongColor}
+            onCorrect={handleCorrect}
           />
         </Stack>
       </div>
