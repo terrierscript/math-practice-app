@@ -1,13 +1,12 @@
 import { Card, Text, Stack, Group, Badge, Divider, Button, ScrollArea, Center } from "@mantine/core"
+import Link from "next/link"
 import { formatTime } from "../utils/time"
 import { type GameRecord, type GameMode, getGameRecords, getGameStatistics, clearGameRecords, confirmClearRecords } from "../utils/storage"
 import { useState, useEffect } from "react"
 
-interface GameRecordsProps {
-  onBack?: () => void
-}
+interface GameRecordsProps {}
 
-export function GameRecords({ onBack }: GameRecordsProps) {
+export function GameRecords() {
   const [records, setRecords] = useState<GameRecord[]>([])
   const [statistics, setStatistics] = useState({
     totalGames: 0,
@@ -61,9 +60,8 @@ export function GameRecords({ onBack }: GameRecordsProps) {
             <Text size="lg" c="dimmed">まだ記録がありません</Text>
             <Text size="md" c="dimmed">ゲームを完了すると記録が保存されます</Text>
             
-            {onBack && (
+            <Link href="/">
               <Button 
-                onClick={onBack}
                 size="lg"
                 color="gray"
                 variant="filled"
@@ -73,7 +71,7 @@ export function GameRecords({ onBack }: GameRecordsProps) {
               >
                 戻る
               </Button>
-            )}
+            </Link>
           </Stack>
         </Card>
       </Center>
@@ -163,9 +161,8 @@ export function GameRecords({ onBack }: GameRecordsProps) {
             </Stack>
           </ScrollArea>
 
-          {onBack && (
+          <Link href="/">
             <Button 
-              onClick={onBack}
               size="lg"
               color="gray"
               variant="filled"
@@ -175,7 +172,7 @@ export function GameRecords({ onBack }: GameRecordsProps) {
             >
               戻る
             </Button>
-          )}
+          </Link>
         </Stack>
       </Card>
     </Center>
