@@ -106,6 +106,7 @@ export function MathGame({
   if (isCompleted) {
     return (
       <GameCompletion 
+        mode={mode}
         totalProblems={problems.length}
         score={score}
         elapsedSeconds={elapsedSeconds}

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Button, Stack, Card, Text, Center } from "@mantine/core"
+import { useRouter } from "next/navigation"
 import { AdditionGame } from "../components/addition-game"
 import { SubtractionGame } from "../components/subtraction-game"
 import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, saveGameState, type GameMode, type GameState } from "../utils/storage"
@@ -11,6 +12,7 @@ type Mode = GameMode | null
 export default function MathPracticePage() {
   const [mode, setMode] = useState<Mode>(null)
   const [savedStateInfo, setSavedStateInfo] = useState<ReturnType<typeof getSavedStateInfo>>(null)
+  const router = useRouter()
 
   useEffect(() => {
     setSavedStateInfo(getSavedStateInfo())
@@ -87,6 +89,19 @@ export default function MathPracticePage() {
             data-testid="subtraction-game-button"
           >
             ひきざん
+          </Button>
+          
+          <Button
+            onClick={() => router.push('/scores')}
+            size="lg"
+            color="grape"
+            variant="outline"
+            radius="xl"
+            fullWidth
+            style={{ height: '60px', fontSize: '1.25rem', fontWeight: 'bold' }}
+            data-testid="records-button"
+          >
+            📊 記録を見る
           </Button>
 
           {savedStateInfo && (

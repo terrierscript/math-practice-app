@@ -1,8 +1,10 @@
 import { Button, Card, Text, Stack, Center, Group, Divider } from "@mantine/core"
 import { formatTime } from "../utils/time"
-import { type ProblemResult, calculateScore } from "../utils/storage"
+import { type ProblemResult, type GameMode, calculateScore, saveGameRecord } from "../utils/storage"
+import { useEffect } from "react"
 
 interface GameCompletionProps {
+  mode: GameMode
   totalProblems: number
   score: number
   elapsedSeconds: number
@@ -12,6 +14,7 @@ interface GameCompletionProps {
 }
 
 export function GameCompletion({ 
+  mode,
   totalProblems, 
   score, 
   elapsedSeconds, 
@@ -20,6 +23,11 @@ export function GameCompletion({
   buttonColor = "blue" 
 }: GameCompletionProps) {
   const scoreData = calculateScore(problemResults)
+  
+  // ゲーム完了時に記録を保存
+  useEffect(() => {
+    saveGameRecord(mode, totalProblems, scoreData.correctProblems, elapsedSeconds, problemResults)
+  }, [mode, totalProblems, scoreData.correctProblems, elapsedSeconds, problemResults])
   
   return (
     <Center style={{ minHeight: '100vh', padding: '1rem' }}>
