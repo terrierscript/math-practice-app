@@ -87,11 +87,11 @@ export function GameRecords() {
           </Group>
 
           {/* 統計情報 */}
-          <Card withBorder padding="md" style={{ backgroundColor: '#f8f9fa' }}>
+          <Card withBorder padding="md" style={{ backgroundColor: '#f8f9fa' }} data-testid="statistics-section">
             <Text size="lg" fw="bold" mb="md">統計情報</Text>
             <Group justify="space-between">
               <Text size="sm">総ゲーム数</Text>
-              <Text size="sm" fw="bold">{statistics.totalGames}回</Text>
+              <Text size="sm" fw="bold" data-testid="total-games">{statistics.totalGames}回</Text>
             </Group>
             <Group justify="space-between">
               <Text size="sm">足し算</Text>
@@ -118,7 +118,7 @@ export function GameRecords() {
           <ScrollArea style={{ height: '400px' }}>
             <Stack gap="md">
               {records.map((record) => (
-                <Card key={record.id} withBorder padding="md">
+                <Card key={record.id} withBorder padding="md" data-testid="game-record">
                   <Stack gap="xs">
                     <Group justify="space-between" align="center">
                       <Badge color={getModeColor(record.mode)} size="lg">

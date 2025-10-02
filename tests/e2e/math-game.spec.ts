@@ -85,18 +85,20 @@ const verifyGameRecordSaved = async (page: Page, gameType: 'addition' | 'subtrac
   await page.click('[data-testid="records-button"]');
   await expect(page).toHaveURL('/scores');
   
-  // 記録が保存されていることを確認
-  await expect(page.locator('text=統計情報')).toBeVisible();
+  // 統計情報セクションが表示されていることを確認
+  await expect(page.locator('[data-testid="statistics-section"]')).toBeVisible();
   await expect(page.locator('text=過去の記録')).toBeVisible();
   
   // 最新の記録が表示されていることを確認
   const gameTypeText = gameType === 'addition' ? '足し算' : '引き算';
   await expect(page.locator(`text=${gameTypeText}`).first()).toBeVisible();
   
-  // 記録の詳細が表示されていることを確認
-  await expect(page.locator('text=正解率')).toBeVisible();
-  await expect(page.locator('text=正解数')).toBeVisible();
-  await expect(page.locator('text=所要時間')).toBeVisible();
+  // 統計情報の詳細が表示されていることを確認
+  await expect(page.locator('[data-testid="statistics-section"]').locator('text=平均正解率')).toBeVisible();
+  await expect(page.locator('[data-testid="statistics-section"]').locator('text=最高正解率')).toBeVisible();
+  
+  // 少なくとも1つの記録が存在することを確認
+  await expect(page.locator('[data-testid="game-record"]')).toHaveCount(1);
 };
 
 test.describe('算数ゲーム E2E テスト', () => {
@@ -130,11 +132,12 @@ test.describe('算数ゲーム E2E テスト', () => {
     await expect(page).toHaveURL('/scores');
     
     // 統計情報で総ゲーム数が2回になっていることを確認
-    await expect(page.locator('text=2回')).toBeVisible();
+    await expect(page.locator('[data-testid="total-games"]')).toContainText('2回');
     
-    // 両方のゲームタイプの記録があることを確認
-    await expect(page.locator('text=足し算')).toBeVisible();
-    await expect(page.locator('text=引き算')).toBeVisible();
+    // 両方のゲームタイプの記録があることを確認（記録一覧から）
+    await expect(page.locator('[data-testid="game-record"]')).toHaveCount(2);
+    await expect(page.locator('text=足し算').first()).toBeVisible();
+    await expect(page.locator('text=引き算').first()).toBeVisible();
   });
 
   test('記録が空の場合の表示を確認', async ({ page }) => {
