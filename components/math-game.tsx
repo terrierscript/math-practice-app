@@ -11,7 +11,6 @@ import { type GameMode, type GameState } from "../utils/storage"
 
 interface MathGameProps {
   mode: GameMode
-  operator: "+" | "-"
   numbers: number[]
   baseColor: string
   selectedCorrectColor: string
@@ -25,7 +24,6 @@ interface MathGameProps {
 
 export function MathGame({
   mode,
-  operator,
   numbers,
   baseColor,
   selectedCorrectColor,
@@ -140,7 +138,7 @@ export function MathGame({
           <ProblemDisplay
             num1={currentProblem.num1}
             num2={currentProblem.num2}
-            operator={operator}
+            operator={currentProblem.operator}
             selectedAnswer={selectedAnswer}
             isWrong={isWrong}
           />

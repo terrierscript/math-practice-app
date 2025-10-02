@@ -1,3 +1,5 @@
+import { type Problem } from "./problems"
+
 // ゲーム状態の型定義
 export type GameMode = "addition" | "subtraction"
 
@@ -6,11 +8,7 @@ export interface GameState {
   currentIndex: number
   score: number
   elapsedSeconds: number
-  problems: {
-    num1: number
-    num2: number
-    answer: number
-  }[]
+  problems: Problem[]
   savedAt: number // タイムスタンプ
 }
 

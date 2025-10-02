@@ -3,6 +3,7 @@ export type Problem = {
   num1: number
   num2: number
   answer: number
+  operator: "+" | "-"
 }
 
 // 足し算の問題を生成
@@ -16,6 +17,7 @@ export function generateAdditionProblems(): Problem[] {
           num1: i,
           num2: j,
           answer: i + j,
+          operator: "+",
         })
       }
     }
@@ -37,6 +39,7 @@ export function generateSubtractionProblems(): Problem[] {
           num1: i,
           num2: j,
           answer: result,
+          operator: "-",
         })
       }
     }

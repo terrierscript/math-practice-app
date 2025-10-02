@@ -9,12 +9,13 @@ interface AdditionGameProps {
 }
 
 export function AdditionGame({ onComplete, initialState, onStateChange }: AdditionGameProps) {
-  const problems = initialState?.problems ?? generateAdditionProblems()
+  // operatorフィールドが存在しない場合は新しい問題を生成
+  const hasValidProblems = initialState?.problems?.every(p => 'operator' in p)
+  const problems = hasValidProblems && initialState ? initialState.problems : generateAdditionProblems()
 
   return (
     <MathGame
       mode="addition"
-      operator="+"
       numbers={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
       baseColor="orange"
       selectedCorrectColor="blue"
