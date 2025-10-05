@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Stack } from "@mantine/core"
+import { Stack, Grid } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { TwoDigitNumberPad } from "./two-digit-number-pad"
 import { ProblemDisplay } from "./problem-display"
@@ -50,24 +50,29 @@ export function MultiplicationProblemManager({
   }
 
   return (
-    <Stack gap="xl" data-testid="multiplication-problem-manager">
-      <ProblemDisplay
-        num1={problem.num1}
-        num2={problem.num2}
-        operator={problem.operator}
-        selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
-        isWrong={isWrong}
-      />
-
-      <TwoDigitNumberPad
-        selectedAnswer={selectedAnswer}
-        isWrong={isWrong}
-        onSubmit={handleSubmit}
-        onInputChange={handleInputChange}
-        baseColor={baseColor}
-        selectedCorrectColor={selectedCorrectColor}
-        selectedWrongColor={selectedWrongColor}
-      />
-    </Stack>
+    <div data-testid="multiplication-problem-manager">
+      <Grid gutter="xl" align="center">
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <ProblemDisplay
+            num1={problem.num1}
+            num2={problem.num2}
+            operator={problem.operator}
+            selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
+            isWrong={isWrong}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 12, md: 6 }}>
+          <TwoDigitNumberPad
+            selectedAnswer={selectedAnswer}
+            isWrong={isWrong}
+            onSubmit={handleSubmit}
+            onInputChange={handleInputChange}
+            baseColor={baseColor}
+            selectedCorrectColor={selectedCorrectColor}
+            selectedWrongColor={selectedWrongColor}
+          />
+        </Grid.Col>
+      </Grid>
+    </div>
   )
 }

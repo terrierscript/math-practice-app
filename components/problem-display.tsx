@@ -18,68 +18,69 @@ export function ProblemDisplay({
   return (
     <Card withBorder shadow="lg" padding="xl" data-testid="problem-display">
       <Group 
-        gap="xs" 
-        justify="center" 
+        gap="md" 
+        justify="center"
+        wrap="nowrap"
         data-testid="problem-equation"
         style={{
-          fontSize: 'clamp(3rem, 8vw, 5rem)',
+          fontSize: 'clamp(2rem, 6vw, 4rem)',
           fontWeight: 'bold',
         }}
       >
         <Text 
-          size="4rem"
           fw="bold"
           c={isWrong ? "red" : undefined}
           style={{ 
             fontSize: 'inherit',
-            transition: 'color 0.2s'
+            transition: 'color 0.2s',
+            whiteSpace: 'nowrap'
           }}
           data-testid="problem-num1"
         >
           {num1}
         </Text>
         <Text 
-          size="4rem"
           fw="bold"
           c={isWrong ? "red" : undefined}
           style={{ 
             fontSize: 'inherit',
-            transition: 'color 0.2s'
+            transition: 'color 0.2s',
+            whiteSpace: 'nowrap'
           }}
           data-testid="problem-operator"
         >
           {operator}
         </Text>
         <Text 
-          size="4rem"
           fw="bold"
           c={isWrong ? "red" : undefined}
           style={{ 
             fontSize: 'inherit',
-            transition: 'color 0.2s'
+            transition: 'color 0.2s',
+            whiteSpace: 'nowrap'
           }}
           data-testid="problem-num2"
         >
           {num2}
         </Text>
         <Text 
-          size="4rem"
           fw="bold"
           c={isWrong ? "red" : undefined}
           style={{ 
             fontSize: 'inherit',
-            transition: 'color 0.2s'
+            transition: 'color 0.2s',
+            whiteSpace: 'nowrap'
           }}
         >
           =
         </Text>
         <Text 
-          size="4rem"
           fw="bold"
           c={selectedAnswer !== null ? (isWrong ? 'red' : 'blue') : (isWrong ? "red" : undefined)}
           style={{ 
             fontSize: 'inherit',
-            transition: 'color 0.2s'
+            transition: 'color 0.2s',
+            whiteSpace: 'nowrap'
           }}
           data-testid="problem-answer"
         >
