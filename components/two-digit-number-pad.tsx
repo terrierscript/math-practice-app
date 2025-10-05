@@ -4,7 +4,8 @@ import { useState } from "react"
 interface TwoDigitNumberPadProps {
   selectedAnswer: number | null
   isWrong: boolean
-  onNumberClick: (num: number) => void
+  onNumberClick?: (num: number) => void
+  onSubmit?: () => void
   onInputChange?: (num: number | null) => void
   baseColor?: string
   selectedCorrectColor?: string
@@ -15,6 +16,7 @@ export function TwoDigitNumberPad({
   selectedAnswer,
   isWrong,
   onNumberClick,
+  onSubmit,
   onInputChange,
   baseColor = "orange",
   selectedCorrectColor = "blue",
@@ -33,7 +35,11 @@ export function TwoDigitNumberPad({
 
   const handleEnter = () => {
     if (pendingNumber !== null) {
-      onNumberClick(pendingNumber)
+      if (onSubmit) {
+        onSubmit()
+      } else if (onNumberClick) {
+        onNumberClick(pendingNumber)
+      }
       // エンター後は入力をクリアしない（既存のNumberPadと同じ動作）
     }
   }
@@ -119,19 +125,12 @@ export function TwoDigitNumberPad({
             fullWidth
             variant="filled"
             radius="xl"
-            color={
-              selectedAnswer === pendingNumber
-                ? isWrong
-                  ? selectedWrongColor
-                  : selectedCorrectColor
-                : "green"
-            }
+            color={isWrong ? selectedWrongColor : "green"}
             disabled={pendingNumber === null}
             style={{
               height: '4rem',
               fontSize: '1.5rem',
               fontWeight: 'bold',
-              transform: selectedAnswer === pendingNumber ? 'scale(1.1)' : 'scale(1)',
               transition: 'all 0.2s'
             }}
             data-testid="enter-button"

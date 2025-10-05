@@ -26,27 +26,27 @@ export function MultiplicationProblemManager({
   const [isWrong, setIsWrong] = useState(false)
   const [hasWrongAnswer, setHasWrongAnswer] = useState(false)
 
-  const handleNumberClick = (num: number) => {
-    if (selectedAnswer === null) {
-      setSelectedAnswer(num)
-      setIsWrong(false)
-    } else if (selectedAnswer === num) {
-      if (num === problem.answer) {
-        // 正解の場合
-        onCorrect(hasWrongAnswer)
-      } else {
-        // 不正解の場合
-        setIsWrong(true)
-        setHasWrongAnswer(true)
-      }
+  const handleSubmit = () => {
+    if (inputValue === null) return
+    
+    setSelectedAnswer(inputValue)
+    
+    if (inputValue === problem.answer) {
+      // 正解の場合
+      onCorrect(hasWrongAnswer)
     } else {
-      setSelectedAnswer(num)
-      setIsWrong(false)
+      // 不正解の場合
+      setIsWrong(true)
+      setHasWrongAnswer(true)
     }
   }
 
   const handleInputChange = (value: number | null) => {
     setInputValue(value)
+    // 入力値が変わったら間違い状態をクリア
+    if (isWrong) {
+      setIsWrong(false)
+    }
   }
 
   return (
@@ -62,7 +62,7 @@ export function MultiplicationProblemManager({
       <TwoDigitNumberPad
         selectedAnswer={selectedAnswer}
         isWrong={isWrong}
-        onNumberClick={handleNumberClick}
+        onSubmit={handleSubmit}
         onInputChange={handleInputChange}
         baseColor={baseColor}
         selectedCorrectColor={selectedCorrectColor}
