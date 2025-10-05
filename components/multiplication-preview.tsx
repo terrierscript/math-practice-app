@@ -32,7 +32,11 @@ export function MultiplicationPreview({ num1, num2 }: MultiplicationPreviewProps
         backgroundColor: '#f8f9fa',
         borderRadius: '8px',
         border: '1px solid #e9ecef',
-        marginTop: '1rem'
+        marginTop: '1rem',
+        height: '200px', // 9x9の場合を想定した固定高さ
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
       <Stack gap="xs" align="center">
