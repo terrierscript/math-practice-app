@@ -5,6 +5,7 @@ import { Button, Text, Stack, Group, Center } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { ProblemManager } from "./problem-manager"
+import { MultiplicationProblemManager } from "./multiplication-problem-manager"
 import { formatTime } from "../utils/time"
 import { type GameMode, type GameState, type ProblemResult, saveGameRecord, calculateScore } from "../utils/storage"
 
@@ -142,15 +143,26 @@ export function MathGame({
             </Group>
           </Group>
 
-          <ProblemManager
-            key={currentIndex} // キーを指定することで問題が変わったときにコンポーネントを再マウント
-            problem={currentProblem}
-            numbers={numbers}
-            baseColor={baseColor}
-            selectedCorrectColor={selectedCorrectColor}
-            selectedWrongColor={selectedWrongColor}
-            onCorrect={handleCorrect}
-          />
+          {mode === "multiplication" ? (
+            <MultiplicationProblemManager
+              key={currentIndex} // キーを指定することで問題が変わったときにコンポーネントを再マウント
+              problem={currentProblem}
+              baseColor={baseColor}
+              selectedCorrectColor={selectedCorrectColor}
+              selectedWrongColor={selectedWrongColor}
+              onCorrect={handleCorrect}
+            />
+          ) : (
+            <ProblemManager
+              key={currentIndex} // キーを指定することで問題が変わったときにコンポーネントを再マウント
+              problem={currentProblem}
+              numbers={numbers}
+              baseColor={baseColor}
+              selectedCorrectColor={selectedCorrectColor}
+              selectedWrongColor={selectedWrongColor}
+              onCorrect={handleCorrect}
+            />
+          )}
         </Stack>
       </div>
     </Center>

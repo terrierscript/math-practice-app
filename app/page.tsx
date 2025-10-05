@@ -5,6 +5,7 @@ import { Button, Stack, Card, Text, Center } from "@mantine/core"
 import { useRouter } from "next/navigation"
 import { AdditionGame } from "../components/addition-game"
 import { SubtractionGame } from "../components/subtraction-game"
+import { MultiplicationGame } from "../components/multiplication-game"
 import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, saveGameState, type GameMode, type GameState } from "../utils/storage"
 
 type Mode = GameMode | null
@@ -48,7 +49,7 @@ export default function MathPracticePage() {
                   前回の続きから始められます
                 </Text>
                 <Text c="dimmed" data-testid="saved-game-info">
-                  {savedStateInfo.mode === "addition" ? "たしざん" : "ひきざん"} - {savedStateInfo.progress} ({savedStateInfo.timeAgo}に保存)
+                  {savedStateInfo.mode === "addition" ? "たしざん" : savedStateInfo.mode === "subtraction" ? "ひきざん" : "かけざん"} - {savedStateInfo.progress} ({savedStateInfo.timeAgo}に保存)
                 </Text>
                 <Button
                   onClick={handleContinue}
@@ -89,6 +90,18 @@ export default function MathPracticePage() {
             data-testid="subtraction-game-button"
           >
             ひきざん
+          </Button>
+          <Button
+            onClick={() => handleNewGame("multiplication")}
+            size="xl"
+            color="green"
+            variant="filled"
+            radius="xl"
+            fullWidth
+            style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
+            data-testid="multiplication-game-button"
+          >
+            かけざん
           </Button>
           
           <Button
@@ -143,9 +156,19 @@ export default function MathPracticePage() {
         setSavedStateInfo(null)
       }} 
     />
-  ) : (
+  ) : mode === "subtraction" ? (
     <SubtractionGame 
       initialState={initialState?.mode === "subtraction" ? initialState : undefined}
+      onStateChange={handleStateChange}
+      onComplete={() => {
+        clearGameState()
+        setMode(null)
+        setSavedStateInfo(null)
+      }} 
+    />
+  ) : (
+    <MultiplicationGame 
+      initialState={initialState?.mode === "multiplication" ? initialState : undefined}
       onStateChange={handleStateChange}
       onComplete={() => {
         clearGameState()

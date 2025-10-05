@@ -15,6 +15,7 @@ export function TwoDigitNumberPad({
   selectedAnswer,
   isWrong,
   onNumberClick,
+  onInputChange,
   baseColor = "orange",
   selectedCorrectColor = "blue",
   selectedWrongColor = "red"
@@ -25,7 +26,9 @@ export function TwoDigitNumberPad({
   const handleNumberClick = (num: number) => {
     const newInput = currentInput + num.toString()
     setCurrentInput(newInput)
-    setPendingNumber(parseInt(newInput))
+    const newPending = parseInt(newInput)
+    setPendingNumber(newPending)
+    onInputChange?.(newPending)
   }
 
   const handleEnter = () => {
@@ -38,24 +41,12 @@ export function TwoDigitNumberPad({
   const handleClear = () => {
     setCurrentInput("")
     setPendingNumber(null)
+    onInputChange?.(null)
   }
 
   return (
     <div>
-      {/* 数字入力エリア - 現在の入力を表示 */}
-      {currentInput && (
-        <div style={{
-          textAlign: 'center',
-          padding: '1rem',
-          fontSize: '1.5rem',
-          fontWeight: 'bold',
-          backgroundColor: '#f0f0f0',
-          borderRadius: '8px',
-          marginBottom: '1rem'
-        }}>
-          入力中: {currentInput}
-        </div>
-      )}
+
 
       <Grid gutter="md" data-testid="two-digit-number-pad">
         {/* 数字パッド */}

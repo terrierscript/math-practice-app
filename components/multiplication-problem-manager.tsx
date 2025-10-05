@@ -22,6 +22,7 @@ export function MultiplicationProblemManager({
   onCorrect
 }: MultiplicationProblemManagerProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
+  const [inputValue, setInputValue] = useState<number | null>(null)
   const [isWrong, setIsWrong] = useState(false)
   const [hasWrongAnswer, setHasWrongAnswer] = useState(false)
 
@@ -44,13 +45,17 @@ export function MultiplicationProblemManager({
     }
   }
 
+  const handleInputChange = (value: number | null) => {
+    setInputValue(value)
+  }
+
   return (
     <Stack gap="xl" data-testid="multiplication-problem-manager">
       <ProblemDisplay
         num1={problem.num1}
         num2={problem.num2}
         operator={problem.operator}
-        selectedAnswer={selectedAnswer}
+        selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
         isWrong={isWrong}
       />
 
@@ -58,6 +63,7 @@ export function MultiplicationProblemManager({
         selectedAnswer={selectedAnswer}
         isWrong={isWrong}
         onNumberClick={handleNumberClick}
+        onInputChange={handleInputChange}
         baseColor={baseColor}
         selectedCorrectColor={selectedCorrectColor}
         selectedWrongColor={selectedWrongColor}
