@@ -5,6 +5,7 @@ import { Stack, Grid } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { TwoDigitNumberPad } from "./two-digit-number-pad"
 import { ProblemDisplay } from "./problem-display"
+import { MultiplicationPreview } from "./multiplication-preview"
 
 interface MultiplicationProblemManagerProps {
   problem: Problem
@@ -51,15 +52,21 @@ export function MultiplicationProblemManager({
 
   return (
     <div data-testid="multiplication-problem-manager">
-      <Grid gutter="xl" align="center">
+      <Grid gutter="xl" align="flex-start">
         <Grid.Col span={{ base: 12, md: 6 }}>
-          <ProblemDisplay
-            num1={problem.num1}
-            num2={problem.num2}
-            operator={problem.operator}
-            selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
-            isWrong={isWrong}
-          />
+          <Stack gap="md">
+            <ProblemDisplay
+              num1={problem.num1}
+              num2={problem.num2}
+              operator={problem.operator}
+              selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
+              isWrong={isWrong}
+            />
+            <MultiplicationPreview 
+              num1={problem.num1} 
+              num2={problem.num2} 
+            />
+          </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6 }}>
           <TwoDigitNumberPad
