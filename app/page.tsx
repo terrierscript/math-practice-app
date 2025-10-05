@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button, Stack, Card, Text, Center } from "@mantine/core"
+import { Button, Stack, Card, Text, Center, Divider } from "@mantine/core"
 import { useRouter } from "next/navigation"
 import { AdditionGame } from "../components/addition-game"
 import { SubtractionGame } from "../components/subtraction-game"
@@ -91,6 +91,7 @@ export default function MathPracticePage() {
           >
             ひきざん
           </Button>
+          <Divider/>
           <Button
             onClick={() => handleNewGame("multiplication")}
             size="xl"
