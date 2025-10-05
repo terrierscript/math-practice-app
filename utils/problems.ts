@@ -3,7 +3,7 @@ export type Problem = {
   num1: number
   num2: number
   answer: number
-  operator: "+" | "-"
+  operator: "+" | "-" | "×"
 }
 
 // 足し算の問題を生成
@@ -42,6 +42,34 @@ export function generateSubtractionProblems(): Problem[] {
           operator: "-",
         })
       }
+    }
+  }
+
+  // ランダムにシャッフル
+  return allProblems.sort(() => Math.random() - 0.5)
+}
+
+// 掛け算の問題を生成
+export function generateMultiplicationProblems(): Problem[] {
+  const allProblems: Problem[] = []
+
+  // i <= j の掛け算の組み合わせをすべて作成
+  for (let i = 1; i <= 9; i++) {
+    for (let j = i; j <= 9; j++) {
+      const problem = {
+        num1: i,
+        num2: j,
+        answer: i * j,
+        operator: "×" as const,
+      }
+      
+      // ランダムに数値の順序を入れ替え
+      if (Math.random() < 0.5) {
+        problem.num1 = j
+        problem.num2 = i
+      }
+      
+      allProblems.push(problem)
     }
   }
 
