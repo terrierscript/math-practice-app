@@ -74,5 +74,5 @@ export function generateMultiplicationProblems(): Problem[] {
   }
 
   // ランダムにシャッフル
-  return allProblems.sort(() => Math.random() - 0.5).splice(0, 20) // 50問に制限
+  return allProblems.sort(() => Math.random() - 0.5)
 }
