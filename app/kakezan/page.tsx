@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 // セルの種類を定義
-type CellType = 'selected' | 'same-row' | 'same-col' | 'normal';
+type CellType = 'selected' | 'same-row' | 'same-col' | 'same-value' | 'normal';
 
 // セルコンポーネントのProps
 interface MultiplicationCellProps {
@@ -58,9 +58,13 @@ function MultiplicationCell({ row, col, selectedCell, onCellClick }: Multiplicat
     const isSelected = selectedCell.row === row && selectedCell.col === col;
     const isSameRow = selectedCell.row === row;
     const isSameCol = selectedCell.col === col;
+    const currentValue = row * col;
+    const selectedValue = selectedCell.row * selectedCell.col;
+    const isSameValue = currentValue === selectedValue && !isSelected;
     
     if (isSelected) return 'selected';
     if (isSameRow || isSameCol) return isSameRow ? 'same-row' : 'same-col';
+    if (isSameValue) return 'same-value';
     return 'normal';
   };
   
@@ -87,6 +91,13 @@ function MultiplicationCell({ row, col, selectedCell, onCellClick }: Multiplicat
           backgroundColor: '#e3f2fd',
           color: '#1976d2',
           fontWeight: '500' as const,
+        };
+      case 'same-value':
+        return {
+          ...baseStyle,
+          backgroundColor: 'transparent',
+          color: '#2e7d32', // 緑色
+          fontWeight: 'bold' as const,
         };
       default:
         return {
