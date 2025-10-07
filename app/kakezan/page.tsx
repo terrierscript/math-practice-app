@@ -2,29 +2,62 @@
 
 import { Table, Text, Stack, Button, Center, Card } from "@mantine/core"
 import Link from "next/link"
+import { useState } from "react"
 
 export default function KakezanPage() {
   // 1から9までの数字の配列を作成
   const numbers = Array.from({ length: 9 }, (_, i) => i + 1);
+  
+  // 選択された行と列を管理
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [selectedCol, setSelectedCol] = useState<number | null>(null);
+
+  // セルの背景色を決定する関数
+  const getCellBackgroundColor = (row: number, col: number) => {
+    if (selectedRow === row && selectedCol === col) {
+      // 選択されたセル
+      return '#2196f3'; // 青
+    } else if (selectedRow === row || selectedCol === col) {
+      // 同じ行または列
+      return '#bbdefb'; // 薄い青
+    }
+    return 'transparent';
+  };
+
+  // セルクリック時の処理
+  const handleCellClick = (row: number, col: number) => {
+    if (selectedRow === row && selectedCol === col) {
+      // 同じセルをクリックした場合は選択解除
+      setSelectedRow(null);
+      setSelectedCol(null);
+    } else {
+      // 新しいセルを選択
+      setSelectedRow(row);
+      setSelectedCol(col);
+    }
+  };
 
   const rows = numbers.map((row) => (
     <Table.Tr key={row}>
-      <Table.Th style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold', textAlign: 'center' }}>
+      <Table.Th style={{ 
+        backgroundColor: selectedRow === row ? '#bbdefb' : '#f8f9fa',
+        fontWeight: 'bold', 
+        textAlign: 'center',
+        transition: 'background-color 0.2s'
+      }}>
         {row}
       </Table.Th>
       {numbers.map((col) => (
         <Table.Td
           key={`${row}-${col}`}
+          onClick={() => handleCellClick(row, col)}
           style={{ 
             textAlign: 'center',
             cursor: 'pointer',
-            transition: 'background-color 0.2s'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = '#e3f2fd'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent'
+            transition: 'background-color 0.2s',
+            backgroundColor: getCellBackgroundColor(row, col),
+            color: selectedRow === row && selectedCol === col ? 'white' : 'inherit',
+            fontWeight: selectedRow === row && selectedCol === col ? 'bold' : 'normal'
           }}
         >
           {row * col}
@@ -58,7 +91,12 @@ export default function KakezanPage() {
                 {numbers.map((num) => (
                   <Table.Th 
                     key={num} 
-                    style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold', textAlign: 'center' }}
+                    style={{ 
+                      backgroundColor: selectedCol === num ? '#bbdefb' : '#f8f9fa',
+                      fontWeight: 'bold', 
+                      textAlign: 'center',
+                      transition: 'background-color 0.2s'
+                    }}
                   >
                     {num}
                   </Table.Th>
