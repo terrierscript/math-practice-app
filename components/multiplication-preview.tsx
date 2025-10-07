@@ -6,22 +6,25 @@ interface MultiplicationPreviewProps {
 }
 
 export function MultiplicationPreview({ num1, num2 }: MultiplicationPreviewProps) {
-  // num2の回数分の行を作成
-  const rows = Array.from({ length: num2 }, (_, rowIndex) => (
+  // 9x9のグリッドを作成し、有効な部分のみ色をつける
+  const rows = Array.from({ length: 9 }, (_, rowIndex) => (
     <Group key={rowIndex} gap="xs" justify="center">
-      {/* num1の回数分の●を作成 */}
-      {Array.from({ length: num1 }, (_, colIndex) => (
-        <Box
-          key={colIndex}
-          style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            backgroundColor: '#228be6',
-            display: 'inline-block'
-          }}
-        />
-      ))}
+      {Array.from({ length: 9 }, (_, colIndex) => {
+        // 有効な範囲内かどうかを判定
+        const isActive = rowIndex < num2 && colIndex < num1
+        return (
+          <Box
+            key={colIndex}
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              backgroundColor: isActive ? '#228be6' : '#e9ecef',
+              display: 'inline-block'
+            }}
+          />
+        )
+      })}
     </Group>
   ))
 
@@ -33,7 +36,7 @@ export function MultiplicationPreview({ num1, num2 }: MultiplicationPreviewProps
         borderRadius: '8px',
         border: '1px solid #e9ecef',
         marginTop: '1rem',
-        height: '200px', // 9x9の場合を想定した固定高さ
+        height: '200px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
