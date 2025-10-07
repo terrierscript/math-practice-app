@@ -4,61 +4,146 @@ import { Table, Text, Stack, Button, Center, Card } from "@mantine/core"
 import Link from "next/link"
 import { useState } from "react"
 
+// セルの種類を定義
+type CellType = 'selected' | 'same-row' | 'same-col' | 'normal';
+
+// セルコンポーネントのProps
+interface MultiplicationCellProps {
+  row: number;
+  col: number;
+  selectedCell: {row: number, col: number} | null;
+  onCellClick: (row: number, col: number) => void;
+}
+
+// ヘッダーセルのProps
+interface HeaderCellProps {
+  value: number;
+  isHighlighted: boolean;
+  type: 'row' | 'col';
+}
+
+// ヘッダーセルコンポーネント
+function HeaderCell({ value, isHighlighted, type }: HeaderCellProps) {
+  const baseStyle = {
+    fontWeight: 'bold' as const,
+    textAlign: 'center' as const,
+    transition: 'all 0.2s ease',
+  };
+  
+  const style = isHighlighted 
+    ? {
+        ...baseStyle,
+        backgroundColor: '#e3f2fd',
+        color: '#1976d2',
+      }
+    : {
+        ...baseStyle,
+        backgroundColor: '#f8f9fa',
+        color: 'inherit',
+      };
+  
+  return (
+    <Table.Th style={style}>
+      {value === 0 ? '×' : value}
+    </Table.Th>
+  );
+}
+
+// セルコンポーネント
+function MultiplicationCell({ row, col, selectedCell, onCellClick }: MultiplicationCellProps) {
+  // セルの種類を判定
+  const getCellType = (): CellType => {
+    if (!selectedCell) return 'normal';
+    
+    const isSelected = selectedCell.row === row && selectedCell.col === col;
+    const isSameRow = selectedCell.row === row;
+    const isSameCol = selectedCell.col === col;
+    
+    if (isSelected) return 'selected';
+    if (isSameRow || isSameCol) return isSameRow ? 'same-row' : 'same-col';
+    return 'normal';
+  };
+  
+  // セルタイプに応じたスタイルを取得
+  const getCellStyle = (cellType: CellType) => {
+    const baseStyle = {
+      textAlign: 'center' as const,
+      cursor: 'pointer' as const,
+      transition: 'all 0.2s ease',
+    };
+    
+    switch (cellType) {
+      case 'selected':
+        return {
+          ...baseStyle,
+          backgroundColor: '#1976d2',
+          color: 'white',
+          fontWeight: 'bold' as const,
+        };
+      case 'same-row':
+      case 'same-col':
+        return {
+          ...baseStyle,
+          backgroundColor: '#e3f2fd',
+          color: '#1976d2',
+          fontWeight: '500' as const,
+        };
+      default:
+        return {
+          ...baseStyle,
+          backgroundColor: 'transparent',
+          color: 'inherit',
+          fontWeight: 'normal' as const,
+        };
+    }
+  };
+  
+  const cellType = getCellType();
+  const cellStyle = getCellStyle(cellType);
+  
+  return (
+    <Table.Td
+      onClick={() => onCellClick(row, col)}
+      style={cellStyle}
+    >
+      {row * col}
+    </Table.Td>
+  );
+}
+
 export default function KakezanPage() {
   // 1から9までの数字の配列を作成
   const numbers = Array.from({ length: 9 }, (_, i) => i + 1);
   
-  // 選択された行と列を管理
-  const [selectedRow, setSelectedRow] = useState<number | null>(null);
-  const [selectedCol, setSelectedCol] = useState<number | null>(null);
-
-  // セルの背景色を決定する関数
-  const getCellBackgroundColor = (row: number, col: number) => {
-    if (selectedRow === row && selectedCol === col) {
-      // 選択されたセルのみ
-      return '#2196f3'; // 青
-    }
-    return 'transparent';
-  };
+  // 選択されたセルを管理
+  const [selectedCell, setSelectedCell] = useState<{row: number, col: number} | null>(null);
 
   // セルクリック時の処理
   const handleCellClick = (row: number, col: number) => {
-    if (selectedRow === row && selectedCol === col) {
+    if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
       // 同じセルをクリックした場合は選択解除
-      setSelectedRow(null);
-      setSelectedCol(null);
+      setSelectedCell(null);
     } else {
       // 新しいセルを選択
-      setSelectedRow(row);
-      setSelectedCol(col);
+      setSelectedCell({ row, col });
     }
   };
 
   const rows = numbers.map((row) => (
     <Table.Tr key={row}>
-      <Table.Th style={{ 
-        backgroundColor: '#f8f9fa',
-        fontWeight: 'bold', 
-        textAlign: 'center',
-        transition: 'background-color 0.2s'
-      }}>
-        {row}
-      </Table.Th>
+      <HeaderCell
+        value={row}
+        isHighlighted={selectedCell?.row === row}
+        type="row"
+      />
       {numbers.map((col) => (
-        <Table.Td
+        <MultiplicationCell
           key={`${row}-${col}`}
-          onClick={() => handleCellClick(row, col)}
-          style={{ 
-            textAlign: 'center',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s',
-            backgroundColor: getCellBackgroundColor(row, col),
-            color: selectedRow === row && selectedCol === col ? 'white' : 'inherit',
-            fontWeight: selectedRow === row && selectedCol === col ? 'bold' : 'normal'
-          }}
-        >
-          {row * col}
-        </Table.Td>
+          row={row}
+          col={col}
+          selectedCell={selectedCell}
+          onCellClick={handleCellClick}
+        />
       ))}
     </Table.Tr>
   ));
@@ -84,19 +169,14 @@ export default function KakezanPage() {
           >
             <Table.Thead>
               <Table.Tr>
-                <Table.Th style={{ backgroundColor: '#f8f9fa', fontWeight: 'bold', textAlign: 'center' }}>×</Table.Th>
+                <HeaderCell value={0} isHighlighted={false} type="col" />
                 {numbers.map((num) => (
-                  <Table.Th 
-                    key={num} 
-                    style={{ 
-                      backgroundColor: '#f8f9fa',
-                      fontWeight: 'bold', 
-                      textAlign: 'center',
-                      transition: 'background-color 0.2s'
-                    }}
-                  >
-                    {num}
-                  </Table.Th>
+                  <HeaderCell
+                    key={num}
+                    value={num}
+                    isHighlighted={selectedCell?.col === num}
+                    type="col"
+                  />
                 ))}
               </Table.Tr>
             </Table.Thead>
