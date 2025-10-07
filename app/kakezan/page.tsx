@@ -15,11 +15,8 @@ export default function KakezanPage() {
   // セルの背景色を決定する関数
   const getCellBackgroundColor = (row: number, col: number) => {
     if (selectedRow === row && selectedCol === col) {
-      // 選択されたセル
+      // 選択されたセルのみ
       return '#2196f3'; // 青
-    } else if (selectedRow === row || selectedCol === col) {
-      // 同じ行または列
-      return '#bbdefb'; // 薄い青
     }
     return 'transparent';
   };
@@ -40,7 +37,7 @@ export default function KakezanPage() {
   const rows = numbers.map((row) => (
     <Table.Tr key={row}>
       <Table.Th style={{ 
-        backgroundColor: selectedRow === row ? '#bbdefb' : '#f8f9fa',
+        backgroundColor: '#f8f9fa',
         fontWeight: 'bold', 
         textAlign: 'center',
         transition: 'background-color 0.2s'
@@ -92,7 +89,7 @@ export default function KakezanPage() {
                   <Table.Th 
                     key={num} 
                     style={{ 
-                      backgroundColor: selectedCol === num ? '#bbdefb' : '#f8f9fa',
+                      backgroundColor: '#f8f9fa',
                       fontWeight: 'bold', 
                       textAlign: 'center',
                       transition: 'background-color 0.2s'
