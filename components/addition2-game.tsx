@@ -20,7 +20,7 @@ export function Addition2Game({ onComplete, initialState, onStateChange }: Addit
       baseColor="orange"
       selectedCorrectColor="blue"
       selectedWrongColor="red"
-      buttonColor="blue"
+      buttonColor="orange"
       initialState={initialState}
       problems={problems}
       onComplete={onComplete}
