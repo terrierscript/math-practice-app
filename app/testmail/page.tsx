@@ -44,7 +44,8 @@ export default function TestMailPage() {
       const success = await sendCompletionEmail({
         mode: 'addition',
         problemResults,
-        elapsedSeconds: 150 // 2分30秒
+        elapsedSeconds: 150, // 2分30秒
+        titlePrefix: '[テスト]'
       })
       
       if (success) {
@@ -80,6 +81,7 @@ export default function TestMailPage() {
           <Text size="sm" c="dimmed">
             このページでは算数ゲーム結果報告メールの送信をテストします。
             固定のテストデータ（足し算10問中8問正解、2分30秒）で結果報告メールを送信します。
+            テストメールには件名に「[テスト]」が付きます。
           </Text>
 
           <Card withBorder p="md" bg="gray.0">

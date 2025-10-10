@@ -26,12 +26,17 @@ export async function POST(request: NextRequest) {
       totalProblems: emailData.totalProblems,
       time: emailData.time,
       completionDate: emailData.completionDate,
+      titlePrefix: emailData.titlePrefix,
     }))
+
+    const subject = emailData.titlePrefix 
+      ? `${emailData.titlePrefix} 📊 算数ゲーム結果報告 - ${emailData.gameType}ゲーム`
+      : `📊 算数ゲーム結果報告 - ${emailData.gameType}ゲーム`
 
     const { data, error } = await resend.emails.send({
       from: 'Math Practice App <mathapp@resend.terrier.dev>',
       to: [process.env.NOTIFICATION_EMAIL],
-      subject: `📊 算数ゲーム結果報告 - ${emailData.gameType}ゲーム`,
+      subject: subject,
       html: emailHtml,
     })
 

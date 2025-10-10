@@ -18,6 +18,7 @@ interface GameCompletionEmailProps {
   totalProblems: number;
   time: string;
   completionDate: string;
+  titlePrefix?: string;
 }
 
 export const GameCompletionEmail = ({
@@ -27,15 +28,21 @@ export const GameCompletionEmail = ({
   totalProblems = 10,
   time = '2分30秒',
   completionDate = '2024年10月10日',
+  titlePrefix,
 }: GameCompletionEmailProps) => {
   const accuracy = Math.round((correctAnswers / totalProblems) * 100);
 
   return (
     <Html>
       <Head />
-      <Preview>算数ゲーム結果報告 - {gameType}ゲーム完了</Preview>
+      <Preview>{titlePrefix ? `${titlePrefix} ` : ''}算数ゲーム結果報告 - {gameType}ゲーム完了</Preview>
       <Body style={main}>
         <Container style={container}>
+          {titlePrefix && (
+            <Section style={section}>
+              <Text style={testBadge}>🧪 {titlePrefix.replace(/\[|\]/g, '')}メール</Text>
+            </Section>
+          )}
           <Heading style={h1}>📊 算数ゲーム結果報告</Heading>
           
           <Section style={section}>
@@ -134,4 +141,16 @@ const footerText = {
   fontSize: '12px',
   lineHeight: '16px',
   margin: '16px 0',
+};
+
+const testBadge = {
+  backgroundColor: '#fff3cd',
+  border: '1px solid #ffeaa7',
+  borderRadius: '4px',
+  color: '#856404',
+  fontSize: '14px',
+  fontWeight: 'bold',
+  margin: '0 0 20px 0',
+  padding: '8px 12px',
+  textAlign: 'center' as const,
 };

@@ -5,6 +5,7 @@ interface SendCompletionEmailData {
   mode: GameMode
   problemResults: ProblemResult[]
   elapsedSeconds: number
+  titlePrefix?: string
 }
 
 export interface EmailData {
@@ -14,12 +15,14 @@ export interface EmailData {
   totalProblems: number
   time: string
   completionDate: string
+  titlePrefix?: string
 }
 
 export async function sendCompletionEmail({ 
   mode, 
   problemResults, 
-  elapsedSeconds 
+  elapsedSeconds,
+  titlePrefix
 }: SendCompletionEmailData): Promise<boolean> {
   try {
     const scoreData = calculateScore(problemResults)
@@ -55,7 +58,8 @@ export async function sendCompletionEmail({
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-      })
+      }),
+      titlePrefix
     }
 
     const response = await fetch('/api/send-completion-email', {
