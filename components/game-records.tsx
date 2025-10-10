@@ -11,7 +11,9 @@ export function GameRecords() {
   const [statistics, setStatistics] = useState({
     totalGames: 0,
     additionGames: 0,
+    addition2Games: 0,
     subtractionGames: 0,
+    multiplicationGames: 0,
     averageCorrectRate: 0,
     bestCorrectRate: 0
   })
@@ -44,11 +46,23 @@ export function GameRecords() {
   }
 
   const getModeLabel = (mode: GameMode) => {
-    return mode === 'addition' ? '足し算' : '引き算'
+    switch (mode) {
+      case 'addition': return '足し算'
+      case 'addition2': return '足し算2'
+      case 'subtraction': return '引き算'
+      case 'multiplication': return '掛け算'
+      default: return '不明'
+    }
   }
 
   const getModeColor = (mode: GameMode) => {
-    return mode === 'addition' ? 'blue' : 'green'
+    switch (mode) {
+      case 'addition': return 'blue'
+      case 'addition2': return 'cyan'
+      case 'subtraction': return 'green'
+      case 'multiplication': return 'orange'
+      default: return 'gray'
+    }
   }
 
   if (records.length === 0) {
@@ -98,8 +112,16 @@ export function GameRecords() {
               <Text size="sm" fw="bold">{statistics.additionGames}回</Text>
             </Group>
             <Group justify="space-between">
+              <Text size="sm">足し算2</Text>
+              <Text size="sm" fw="bold">{statistics.addition2Games}回</Text>
+            </Group>
+            <Group justify="space-between">
               <Text size="sm">引き算</Text>
               <Text size="sm" fw="bold">{statistics.subtractionGames}回</Text>
+            </Group>
+            <Group justify="space-between">
+              <Text size="sm">掛け算</Text>
+              <Text size="sm" fw="bold">{statistics.multiplicationGames}回</Text>
             </Group>
             <Group justify="space-between">
               <Text size="sm">平均正解率</Text>

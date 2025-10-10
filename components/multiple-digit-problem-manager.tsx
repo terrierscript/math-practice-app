@@ -7,7 +7,7 @@ import { TwoDigitNumberPad } from "./two-digit-number-pad"
 import { ProblemDisplay } from "./problem-display"
 import { MultiplicationPreview } from "./multiplication-preview"
 
-interface MultiplicationProblemManagerProps {
+interface MultipleDigitProblemManagerProps {
   problem: Problem
   baseColor: string
   selectedCorrectColor: string
@@ -15,13 +15,13 @@ interface MultiplicationProblemManagerProps {
   onCorrect: (hasWrongAnswer: boolean) => void
 }
 
-export function MultiplicationProblemManager({
+export function MultipleDigitProblemManager({
   problem,
   baseColor,
   selectedCorrectColor,
   selectedWrongColor,
   onCorrect
-}: MultiplicationProblemManagerProps) {
+}: MultipleDigitProblemManagerProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [inputValue, setInputValue] = useState<number | null>(null)
   const [isWrong, setIsWrong] = useState(false)
@@ -51,7 +51,7 @@ export function MultiplicationProblemManager({
   }
 
   return (
-    <div data-testid="multiplication-problem-manager">
+    <div data-testid="multiple-digit-problem-manager">
       <Grid gutter="xl" align="flex-start">
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Stack gap="md">

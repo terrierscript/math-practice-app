@@ -1,26 +1,26 @@
 import { MathGame } from "./math-game"
-import { generateMultiplicationProblems } from "../utils/problems"
+import { generateAddition2Problems } from "../utils/problems"
 import { type GameState } from "../utils/storage"
 
-interface MultiplicationGameProps {
+interface Addition2GameProps {
   onComplete: () => void
   initialState?: GameState
   onStateChange: (state: Omit<GameState, 'savedAt'>) => void
 }
 
-export function MultiplicationGame({ onComplete, initialState, onStateChange }: MultiplicationGameProps) {
+export function Addition2Game({ onComplete, initialState, onStateChange }: Addition2GameProps) {
   // operatorフィールドが存在しない場合は新しい問題を生成
   const hasValidProblems = initialState?.problems?.every(p => 'operator' in p)
-  const problems = hasValidProblems && initialState ? initialState.problems : generateMultiplicationProblems()
+  const problems = hasValidProblems && initialState ? initialState.problems : generateAddition2Problems()
 
   return (
     <MathGame
-      mode="multiplication"
-      numbers={[]} // 掛け算は2桁入力なので配列は空でOK
-      baseColor="green"
+      mode="addition2"
+      numbers={[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]}
+      baseColor="orange"
       selectedCorrectColor="blue"
       selectedWrongColor="red"
-      buttonColor="green"
+      buttonColor="blue"
       initialState={initialState}
       problems={problems}
       onComplete={onComplete}

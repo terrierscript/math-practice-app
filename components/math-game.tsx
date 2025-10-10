@@ -5,7 +5,7 @@ import { Button, Text, Stack, Group, Center } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { GameCompletion } from "./game-completion"
 import { ProblemManager } from "./problem-manager"
-import { MultiplicationProblemManager } from "./multiplication-problem-manager"
+import { MultipleDigitProblemManager } from "./multiple-digit-problem-manager"
 import { formatTime } from "../utils/time"
 import { type GameMode, type GameState, type ProblemResult, saveGameRecord, calculateScore } from "../utils/storage"
 
@@ -20,6 +20,7 @@ interface MathGameProps {
   problems: Problem[]
   onComplete: () => void
   onStateChange: (state: Omit<GameState, 'savedAt'>) => void
+  useTwoDigitInput?: boolean
 }
 
 export function MathGame({
@@ -32,7 +33,8 @@ export function MathGame({
   initialState,
   problems,
   onComplete,
-  onStateChange
+  onStateChange,
+  useTwoDigitInput = false
 }: MathGameProps) {
   const [currentIndex, setCurrentIndex] = useState(initialState?.currentIndex ?? 0)
   const [score, setScore] = useState(initialState?.score ?? 0)
@@ -143,8 +145,8 @@ export function MathGame({
             </Group>
           </Group>
 
-          {mode === "multiplication" ? (
-            <MultiplicationProblemManager
+          {useTwoDigitInput ? (
+            <MultipleDigitProblemManager
               key={currentIndex} // キーを指定することで問題が変わったときにコンポーネントを再マウント
               problem={currentProblem}
               baseColor={baseColor}
@@ -161,6 +163,7 @@ export function MathGame({
               selectedCorrectColor={selectedCorrectColor}
               selectedWrongColor={selectedWrongColor}
               onCorrect={handleCorrect}
+              useTwoDigitInput={useTwoDigitInput}
             />
           )}
         </Stack>

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button, Stack, Card, Text, Center, Divider } from "@mantine/core"
 import { useRouter } from "next/navigation"
 import { AdditionGame } from "../components/addition-game"
+import { Addition2Game } from "../components/addition2-game"
 import { SubtractionGame } from "../components/subtraction-game"
 import { MultiplicationGame } from "../components/multiplication-game"
 import { getSavedStateInfo, loadGameState, clearGameState, confirmClearData, saveGameState, type GameMode, type GameState } from "../utils/storage"
@@ -79,6 +80,18 @@ export default function MathPracticePage() {
           >
             たしざん
           </Button>
+          <Button 
+            onClick={() => handleNewGame("addition2")} 
+            size="xl" 
+            color="cyan"
+            variant="filled"
+            radius="xl"
+            fullWidth
+            style={{ height: '80px', fontSize: '2rem', fontWeight: 'bold' }}
+            data-testid="addition2-game-button"
+          >
+            たしざん2
+          </Button>
           <Button
             onClick={() => handleNewGame("subtraction")}
             size="xl"
@@ -150,6 +163,16 @@ export default function MathPracticePage() {
   return mode === "addition" ? (
     <AdditionGame 
       initialState={initialState?.mode === "addition" ? initialState : undefined}
+      onStateChange={handleStateChange}
+      onComplete={() => {
+        clearGameState()
+        setMode(null)
+        setSavedStateInfo(null)
+      }} 
+    />
+  ) : mode === "addition2" ? (
+    <Addition2Game 
+      initialState={initialState?.mode === "addition2" ? initialState : undefined}
       onStateChange={handleStateChange}
       onComplete={() => {
         clearGameState()

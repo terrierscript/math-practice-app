@@ -26,7 +26,13 @@ export function TwoDigitNumberPad({
   const [pendingNumber, setPendingNumber] = useState<number | null>(null)
 
   const handleNumberClick = (num: number) => {
-    const newInput = currentInput + num.toString()
+    // 間違った状態の時や、既に2桁入力済みの場合は入力をクリアしてから新しい入力を開始
+    let newInput = currentInput
+    if (isWrong || currentInput.length >= 2) {
+      newInput = ""
+    }
+    
+    newInput = newInput + num.toString()
     setCurrentInput(newInput)
     const newPending = parseInt(newInput)
     setPendingNumber(newPending)
@@ -65,7 +71,7 @@ export function TwoDigitNumberPad({
               variant="filled"
               radius="xl"
               color={baseColor}
-              disabled={currentInput.length >= 2}
+              disabled={false}
               style={{
                 height: '4rem',
                 fontSize: '2rem',
@@ -106,7 +112,7 @@ export function TwoDigitNumberPad({
             variant="filled"
             radius="xl"
             color={baseColor}
-            disabled={currentInput.length >= 2}
+            disabled={false}
             style={{
               height: '4rem',
               fontSize: '2rem',

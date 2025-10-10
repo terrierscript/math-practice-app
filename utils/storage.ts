@@ -2,7 +2,7 @@ import { z } from "zod"
 import { type Problem } from "./problems"
 
 // ゲーム状態の型定義
-export type GameMode = "addition" | "subtraction" | "multiplication"
+export type GameMode = "addition" | "subtraction" | "multiplication" | "addition2"
 
 // 問題の結果を記録する型
 export interface ProblemResult {
@@ -11,7 +11,7 @@ export interface ProblemResult {
 }
 
 // Zodスキーマ定義
-const GameModeSchema = z.enum(["addition", "subtraction", "multiplication"])
+const GameModeSchema = z.enum(["addition", "subtraction", "multiplication", "addition2"])
 
 const ProblemSchema = z.object({
   num1: z.number(),
@@ -245,7 +245,9 @@ export function getLatestGameRecord(): GameRecord | null {
 export function getGameStatistics(): {
   totalGames: number
   additionGames: number
+  addition2Games: number
   subtractionGames: number
+  multiplicationGames: number
   averageCorrectRate: number
   bestCorrectRate: number
 } {
@@ -255,14 +257,18 @@ export function getGameStatistics(): {
     return {
       totalGames: 0,
       additionGames: 0,
+      addition2Games: 0,
       subtractionGames: 0,
+      multiplicationGames: 0,
       averageCorrectRate: 0,
       bestCorrectRate: 0
     }
   }
   
   const additionGames = records.filter(r => r.mode === 'addition').length
+  const addition2Games = records.filter(r => r.mode === 'addition2').length
   const subtractionGames = records.filter(r => r.mode === 'subtraction').length
+  const multiplicationGames = records.filter(r => r.mode === 'multiplication').length
   const averageCorrectRate = Math.round(
     records.reduce((sum, record) => sum + record.correctRate, 0) / records.length
   )
@@ -271,7 +277,9 @@ export function getGameStatistics(): {
   return {
     totalGames: records.length,
     additionGames,
+    addition2Games,
     subtractionGames,
+    multiplicationGames,
     averageCorrectRate,
     bestCorrectRate
   }

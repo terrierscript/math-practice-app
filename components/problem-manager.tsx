@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Stack, Group, Text } from "@mantine/core"
 import { type Problem } from "../utils/problems"
 import { NumberPad } from "./number-pad"
+import { TwoDigitNumberPad } from "./two-digit-number-pad"
 import { ProblemDisplay } from "./problem-display"
 
 interface ProblemManagerProps {
@@ -13,6 +14,7 @@ interface ProblemManagerProps {
   selectedCorrectColor: string
   selectedWrongColor: string
   onCorrect: (hasWrongAnswer: boolean) => void
+  useTwoDigitInput?: boolean
 }
 
 export function ProblemManager({
@@ -21,7 +23,8 @@ export function ProblemManager({
   baseColor,
   selectedCorrectColor,
   selectedWrongColor,
-  onCorrect
+  onCorrect,
+  useTwoDigitInput = false
 }: ProblemManagerProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
   const [isWrong, setIsWrong] = useState(false)
@@ -56,15 +59,26 @@ export function ProblemManager({
         isWrong={isWrong}
       />
 
-      <NumberPad
-        numbers={numbers}
-        selectedAnswer={selectedAnswer}
-        isWrong={isWrong}
-        onNumberClick={handleNumberClick}
-        baseColor={baseColor}
-        selectedCorrectColor={selectedCorrectColor}
-        selectedWrongColor={selectedWrongColor}
-      />
+      {useTwoDigitInput ? (
+        <TwoDigitNumberPad
+          selectedAnswer={selectedAnswer}
+          isWrong={isWrong}
+          onNumberClick={handleNumberClick}
+          baseColor={baseColor}
+          selectedCorrectColor={selectedCorrectColor}
+          selectedWrongColor={selectedWrongColor}
+        />
+      ) : (
+        <NumberPad
+          numbers={numbers}
+          selectedAnswer={selectedAnswer}
+          isWrong={isWrong}
+          onNumberClick={handleNumberClick}
+          baseColor={baseColor}
+          selectedCorrectColor={selectedCorrectColor}
+          selectedWrongColor={selectedWrongColor}
+        />
+      )}
     </Stack>
   )
 }
