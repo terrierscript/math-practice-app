@@ -27,6 +27,28 @@ export function generateAdditionProblems(): Problem[] {
   return allProblems.sort(() => Math.random() - 0.5)
 }
 
+// 足し算2の問題を生成（答えが11-19）
+export function generateAddition2Problems(): Problem[] {
+  const allProblems: Problem[] = []
+
+  for (let i = 0; i <= 9; i++) {
+    for (let j = 0; j <= 9; j++) {
+      const result = i + j
+      if (result >= 11 && result <= 19) {
+        allProblems.push({
+          num1: i,
+          num2: j,
+          answer: result,
+          operator: "+",
+        })
+      }
+    }
+  }
+
+  // ランダムにシャッフル
+  return allProblems.sort(() => Math.random() - 0.5)
+}
+
 // 引き算の問題を生成
 export function generateSubtractionProblems(): Problem[] {
   const allProblems: Problem[] = []

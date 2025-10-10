@@ -135,7 +135,7 @@ export function TwoDigitNumberPad({
             }}
             data-testid="enter-button"
           >
-            {"->"}
+            {"="}
           </Button>
         </Grid.Col>
       </Grid>
