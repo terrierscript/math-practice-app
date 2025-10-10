@@ -152,6 +152,7 @@ export function MathGame({
               baseColor={baseColor}
               selectedCorrectColor={selectedCorrectColor}
               selectedWrongColor={selectedWrongColor}
+              buttonColor={buttonColor}
               onCorrect={handleCorrect}
             />
           ) : (

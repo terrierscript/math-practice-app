@@ -12,6 +12,7 @@ interface MultipleDigitProblemManagerProps {
   baseColor: string
   selectedCorrectColor: string
   selectedWrongColor: string
+  buttonColor: string
   onCorrect: (hasWrongAnswer: boolean) => void
 }
 
@@ -20,6 +21,7 @@ export function MultipleDigitProblemManager({
   baseColor,
   selectedCorrectColor,
   selectedWrongColor,
+  buttonColor,
   onCorrect
 }: MultipleDigitProblemManagerProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null)
@@ -79,6 +81,7 @@ export function MultipleDigitProblemManager({
             baseColor={baseColor}
             selectedCorrectColor={selectedCorrectColor}
             selectedWrongColor={selectedWrongColor}
+            buttonColor={buttonColor}
           />
         </Grid.Col>
       </Grid>

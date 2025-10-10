@@ -10,6 +10,7 @@ interface TwoDigitNumberPadProps {
   baseColor?: string
   selectedCorrectColor?: string
   selectedWrongColor?: string
+  buttonColor?: string
 }
 
 export function TwoDigitNumberPad({
@@ -20,7 +21,8 @@ export function TwoDigitNumberPad({
   onInputChange,
   baseColor = "orange",
   selectedCorrectColor = "blue",
-  selectedWrongColor = "red"
+  selectedWrongColor = "red",
+  buttonColor = "green"
 }: TwoDigitNumberPadProps) {
   const [currentInput, setCurrentInput] = useState("")
   const [pendingNumber, setPendingNumber] = useState<number | null>(null)
@@ -131,7 +133,7 @@ export function TwoDigitNumberPad({
             fullWidth
             variant="filled"
             radius="xl"
-            color={isWrong ? selectedWrongColor : "green"}
+            color={isWrong ? selectedWrongColor : buttonColor}
             disabled={pendingNumber === null}
             style={{
               height: '4rem',
