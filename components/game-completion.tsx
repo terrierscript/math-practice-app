@@ -1,6 +1,8 @@
 import { Button, Card, Text, Stack, Center, Group, Divider } from "@mantine/core"
 import { formatTime } from "../utils/time"
 import { type ProblemResult, type GameMode, calculateScore } from "../utils/storage"
+import { sendCompletionEmail } from "../utils/email"
+import { useEffect } from "react"
 
 interface GameCompletionProps {
   mode: GameMode
@@ -22,6 +24,23 @@ export function GameCompletion({
   buttonColor = "blue" 
 }: GameCompletionProps) {
   const scoreData = calculateScore(problemResults)
+
+  // ゲーム完了時にメールを送信
+  useEffect(() => {
+    const sendEmail = async () => {
+      try {
+        await sendCompletionEmail({
+          mode,
+          problemResults,
+          elapsedSeconds
+        })
+      } catch (error) {
+        console.error('メール送信でエラーが発生しました:', error)
+      }
+    }
+
+    sendEmail()
+  }, [mode, problemResults, elapsedSeconds])
   
   return (
     <Center style={{ minHeight: '100vh', padding: '1rem' }}>
