@@ -5,7 +5,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 // セルの種類を定義
-type CellType = 'selected' | 'same-row' | 'same-col' | 'same-value' | 'normal';
+type CellType = 'selected' | 'same-row' | 'same-col' | 'same-value' | 'square' | 'normal';
 
 // セルコンポーネントのProps
 interface MultiplicationCellProps {
@@ -53,7 +53,11 @@ function HeaderCell({ value, isHighlighted, type }: HeaderCellProps) {
 function MultiplicationCell({ row, col, selectedCell, onCellClick }: MultiplicationCellProps) {
   // セルの種類を判定
   const getCellType = (): CellType => {
-    if (!selectedCell) return 'normal';
+    const isSquare = row === col; // 平方数（同じ数字同士の掛け算）
+    
+    if (!selectedCell) {
+      return isSquare ? 'square' : 'normal';
+    }
     
     const isSelected = selectedCell.row === row && selectedCell.col === col;
     const isSameRow = selectedCell.row === row;
@@ -65,6 +69,7 @@ function MultiplicationCell({ row, col, selectedCell, onCellClick }: Multiplicat
     if (isSelected) return 'selected';
     if (isSameRow || isSameCol) return isSameRow ? 'same-row' : 'same-col';
     if (isSameValue) return 'same-value';
+    if (isSquare) return 'square';
     return 'normal';
   };
   
@@ -98,6 +103,13 @@ function MultiplicationCell({ row, col, selectedCell, onCellClick }: Multiplicat
           backgroundColor: 'transparent',
           color: '#2e7d32', // 緑色
           fontWeight: 'bold' as const,
+        };
+      case 'square':
+        return {
+          ...baseStyle,
+          backgroundColor: '#fce4ec', // うっすらピンク色
+          color: 'inherit',
+          fontWeight: 'normal' as const,
         };
       default:
         return {
