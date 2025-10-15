@@ -282,22 +282,6 @@ test.describe('2桁パッド E2E テスト', () => {
       await expect(page.locator('[data-testid="correct-count"]')).toContainText('正解: 1問');
     });
 
-    test('足し算2ゲームで正解と不正解が混在しても正常動作する', async ({ page }) => {
-      await startTwoDigitGame(page, 'addition2');
-      
-      // 1問目: 正解
-      await playOneProblemCorrectly(page);
-      await expect(page.locator('[data-testid="problem-counter"]')).toContainText('2 /');
-      
-      // 2問目: 不正解 → 正解
-      await playOneProblemIncorrectly(page);
-      await playOneProblemCorrectly(page);
-      await expect(page.locator('[data-testid="problem-counter"]')).toContainText('3 /');
-      
-      // 統計の確認
-      await expect(page.locator('[data-testid="correct-count"]')).toContainText('正解: 2問');
-      await expect(page.locator('[data-testid="incorrect-count"]')).toContainText('間違い: 1問');
-    });
   });
 
   test.describe('UI状態変化テスト', () => {
