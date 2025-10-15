@@ -50,6 +50,10 @@ export function MultipleDigitProblemManager({
     if (isWrong) {
       setIsWrong(false)
     }
+    // 入力値がnull（クリア）の場合、selectedAnswerもクリア
+    if (value === null) {
+      setSelectedAnswer(null)
+    }
   }
 
   return (
