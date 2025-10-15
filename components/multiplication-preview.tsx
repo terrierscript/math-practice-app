@@ -31,6 +31,7 @@ export function MultiplicationPreview({ num1, num2 }: MultiplicationPreviewProps
   return (
     <Box
       p="md"
+      data-testid="multiplication-preview"
       style={{
         backgroundColor: '#f8f9fa',
         borderRadius: '8px',
