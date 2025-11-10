@@ -50,6 +50,7 @@ export function GameRecords() {
       case 'addition': return '足し算'
       case 'addition2': return '足し算2'
       case 'subtraction': return '引き算'
+      case 'subtraction2': return '引き算2'
       case 'multiplication': return '掛け算'
       default: return '不明'
     }
@@ -60,6 +61,7 @@ export function GameRecords() {
       case 'addition': return 'blue'
       case 'addition2': return 'cyan'
       case 'subtraction': return 'green'
+      case 'subtraction2': return 'purple'
       case 'multiplication': return 'orange'
       default: return 'gray'
     }

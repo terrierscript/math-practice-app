@@ -40,6 +40,7 @@ export async function sendCompletionEmail({
       switch (mode) {
         case 'addition': return '足し算'
         case 'subtraction': return '引き算'
+        case 'subtraction2': return '2桁引き算'
         case 'multiplication': return 'かけ算'
         case 'addition2': return '2桁足し算'
         default: return '算数'

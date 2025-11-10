@@ -71,6 +71,30 @@ export function generateSubtractionProblems(): Problem[] {
   return allProblems.sort(() => Math.random() - 0.5)
 }
 
+// 引き算2の問題を生成（繰り下がりのある引き算：11-19から2-9を引く）
+export function generateSubtraction2Problems(): Problem[] {
+  const allProblems: Problem[] = []
+
+  // 11-19の範囲から2-9を引く問題
+  for (let i = 11; i <= 19; i++) {
+    for (let j = 2; j <= 9; j++) {
+      const result = i - j
+      // 答えが0以上で繰り下がりが発生する問題のみ
+      if (result >= 0 && i % 10 < j) {
+        allProblems.push({
+          num1: i,
+          num2: j,
+          answer: result,
+          operator: "-",
+        })
+      }
+    }
+  }
+
+  // ランダムにシャッフル
+  return allProblems.sort(() => Math.random() - 0.5)
+}
+
 // 掛け算の問題を生成
 export function generateMultiplicationProblems(): Problem[] {
   const allProblems: Problem[] = []

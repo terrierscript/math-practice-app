@@ -2,7 +2,7 @@ import { z } from "zod"
 import { type Problem } from "./problems"
 
 // ゲーム状態の型定義
-export type GameMode = "addition" | "subtraction" | "multiplication" | "addition2"
+export type GameMode = "addition" | "subtraction" | "multiplication" | "addition2" | "subtraction2"
 
 // 問題の結果を記録する型
 export interface ProblemResult {
@@ -11,7 +11,7 @@ export interface ProblemResult {
 }
 
 // Zodスキーマ定義
-const GameModeSchema = z.enum(["addition", "subtraction", "multiplication", "addition2"])
+const GameModeSchema = z.enum(["addition", "subtraction", "multiplication", "addition2", "subtraction2"])
 
 const ProblemSchema = z.object({
   num1: z.number(),
