@@ -68,12 +68,12 @@ export function MultipleDigitProblemManager({
               selectedAnswer={inputValue !== null ? inputValue : selectedAnswer}
               isWrong={isWrong}
             />
-            {problem.operator === "×" && (
+            {/* {problem.operator === "×" && (
               <MultiplicationPreview 
                 num1={problem.num1} 
                 num2={problem.num2} 
               />
-            )}
+            )} */}
           </Stack>
         </Grid.Col>
         <Grid.Col span={{ base: 12, md: 6 }}>

@@ -122,3 +122,42 @@ export function generateMultiplicationProblems(): Problem[] {
   // ランダムにシャッフル
   return allProblems.sort(() => Math.random() - 0.5)
 }
+
+// 各段ごとの掛け算問題を生成（1の段〜9の段）
+export function generateMultiplicationByTableProblems(): Problem[] {
+  const allProblems: Problem[] = []
+
+  // 1の段から9の段まで
+  for (let table = 1; table <= 9; table++) {
+    // 各段で1から9までの9問
+    for (let j = 1; j <= 9; j++) {
+      allProblems.push({
+        num1: table,
+        num2: j,
+        answer: table * j,
+        operator: "×",
+      })
+    }
+  }
+
+  // 段ごとにまとめているので、シャッフルはしない
+  return allProblems
+}
+
+// 特定の段の掛け算問題を生成してシャッフル
+export function generateMultiplicationTableProblems(table: number): Problem[] {
+  const problems: Problem[] = []
+
+  // 指定された段で1から9までの9問
+  for (let j = 1; j <= 9; j++) {
+    problems.push({
+      num1: table,
+      num2: j,
+      answer: table * j,
+      operator: "×",
+    })
+  }
+
+  // ランダムにシャッフル
+  return problems.sort(() => Math.random() - 0.5)
+}

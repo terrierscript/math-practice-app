@@ -1,17 +1,18 @@
 import { MathGame } from "./math-game"
-import { generateMultiplicationProblems } from "../utils/problems"
+import { generateMultiplicationProblems, type Problem } from "../utils/problems"
 import { type GameState } from "../utils/storage"
 
 interface MultiplicationGameProps {
   onComplete: () => void
   initialState?: GameState
   onStateChange: (state: Omit<GameState, 'savedAt'>) => void
+  problems?: Problem[]
 }
 
-export function MultiplicationGame({ onComplete, initialState, onStateChange }: MultiplicationGameProps) {
+export function MultiplicationGame({ onComplete, initialState, onStateChange, problems: providedProblems }: MultiplicationGameProps) {
   // operatorフィールドが存在しない場合は新しい問題を生成
   const hasValidProblems = initialState?.problems?.every(p => 'operator' in p)
-  const problems = hasValidProblems && initialState ? initialState.problems : generateMultiplicationProblems()
+  const problems = providedProblems || (hasValidProblems && initialState ? initialState.problems : generateMultiplicationProblems())
 
   return (
     <MathGame

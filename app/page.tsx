@@ -119,7 +119,9 @@ export default function MathPracticePage() {
           </Button>
           <Divider/>
           <Button
-            onClick={() => handleNewGame("multiplication")}
+            component="a"
+            href="/multiple"
+            // onClick={() => handleNewGame("multiplication")}
             size="xl"
             color="green"
             variant="filled"
