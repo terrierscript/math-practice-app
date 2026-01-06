@@ -70,8 +70,8 @@ export default function MultiplePage() {
   return (
     <MultiplicationGame
       problems={problems}
-      initialState={initialState?.mode === "multiplication" ? initialState : undefined}
-      onStateChange={handleStateChange}
+      initialState={undefined}
+      onStateChange={() => {}}
       onComplete={() => {
         clearGameState()
         setSelectedTable(null)
