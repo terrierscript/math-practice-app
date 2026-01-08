@@ -76,6 +76,7 @@ export default function MultiplePage() {
         clearGameState()
         setSelectedTable(null)
       }}
+      sendEmail={false}
     />
   )
 }

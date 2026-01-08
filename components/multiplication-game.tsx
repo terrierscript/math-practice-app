@@ -7,9 +7,10 @@ interface MultiplicationGameProps {
   initialState?: GameState
   onStateChange: (state: Omit<GameState, 'savedAt'>) => void
   problems?: Problem[]
+  sendEmail?: boolean
 }
 
-export function MultiplicationGame({ onComplete, initialState, onStateChange, problems: providedProblems }: MultiplicationGameProps) {
+export function MultiplicationGame({ onComplete, initialState, onStateChange, problems: providedProblems, sendEmail = true }: MultiplicationGameProps) {
   // operatorフィールドが存在しない場合は新しい問題を生成
   const hasValidProblems = initialState?.problems?.every(p => 'operator' in p)
   const problems = providedProblems || (hasValidProblems && initialState ? initialState.problems : generateMultiplicationProblems())
@@ -27,6 +28,7 @@ export function MultiplicationGame({ onComplete, initialState, onStateChange, pr
       onComplete={onComplete}
       onStateChange={onStateChange}
       useTwoDigitInput={true}
+      sendEmail={sendEmail}
     />
   )
 }

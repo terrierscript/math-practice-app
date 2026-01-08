@@ -21,6 +21,7 @@ interface MathGameProps {
   onComplete: () => void
   onStateChange: (state: Omit<GameState, 'savedAt'>) => void
   useTwoDigitInput?: boolean
+  sendEmail?: boolean
 }
 
 export function MathGame({
@@ -34,7 +35,8 @@ export function MathGame({
   problems,
   onComplete,
   onStateChange,
-  useTwoDigitInput = false
+  useTwoDigitInput = false,
+  sendEmail = true
 }: MathGameProps) {
   const [currentIndex, setCurrentIndex] = useState(initialState?.currentIndex ?? 0)
   const [score, setScore] = useState(initialState?.score ?? 0)
@@ -119,6 +121,7 @@ export function MathGame({
         problemResults={problemResults}
         onComplete={onComplete}
         buttonColor={buttonColor}
+        sendEmail={sendEmail}
       />
     )
   }

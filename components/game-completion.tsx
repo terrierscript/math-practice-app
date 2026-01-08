@@ -12,6 +12,7 @@ interface GameCompletionProps {
   problemResults: ProblemResult[]
   onComplete?: () => void
   buttonColor?: string
+  sendEmail?: boolean
 }
 
 export function GameCompletion({ 
@@ -21,13 +22,16 @@ export function GameCompletion({
   elapsedSeconds, 
   problemResults,
   onComplete, 
-  buttonColor = "blue" 
+  buttonColor = "blue",
+  sendEmail = true
 }: GameCompletionProps) {
   const scoreData = calculateScore(problemResults)
 
   // ゲーム完了時にメールを送信
   useEffect(() => {
-    const sendEmail = async () => {
+    if (!sendEmail) return
+
+    const sendEmailAsync = async () => {
       try {
         await sendCompletionEmail({
           mode,
@@ -39,8 +43,8 @@ export function GameCompletion({
       }
     }
 
-    sendEmail()
-  }, [mode, problemResults, elapsedSeconds])
+    sendEmailAsync()
+  }, [mode, problemResults, elapsedSeconds, sendEmail])
   
   return (
     <Center style={{ minHeight: '100vh', padding: '1rem' }}>
