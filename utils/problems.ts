@@ -129,7 +129,9 @@ export function generateRandomMultiplicationProblems(): Problem[] {
 
   for (let index = problems.length - 1; index > 0; index--) {
     const randomIndex = Math.floor(Math.random() * (index + 1))
-    ;[problems[index], problems[randomIndex]] = [problems[randomIndex], problems[index]]
+    const currentProblem = problems[index]
+    problems[index] = problems[randomIndex]
+    problems[randomIndex] = currentProblem
   }
 
   return problems
