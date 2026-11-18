@@ -49,18 +49,6 @@ export default function MultiplePage() {
             9×9ランダム（81問）
           </Button>
           <Button
-            onClick={() => setSelectedTable("accuracy-map")}
-            size="xl"
-            color="blue"
-            variant="outline"
-            radius="xl"
-            fullWidth
-            style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
-            data-testid="multiplication-accuracy-map-button"
-          >
-            正解率を9×9マップで見る
-          </Button>
-          <Button
             onClick={() => setSelectedTable("one-per-table")}
             size="xl"
             color="teal"
@@ -90,6 +78,18 @@ export default function MultiplePage() {
               </Button>
             ))}
           </SimpleGrid>
+          <Button
+            onClick={() => setSelectedTable("accuracy-map")}
+            size="xl"
+            color="blue"
+            variant="outline"
+            radius="xl"
+            fullWidth
+            style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
+            data-testid="multiplication-accuracy-map-button"
+          >
+            正解率を9×9マップで見る
+          </Button>
           <Button
             onClick={() => router.push('/')}
             size="lg"
