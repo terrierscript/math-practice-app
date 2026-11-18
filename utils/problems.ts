@@ -137,6 +137,30 @@ export function generateRandomMultiplicationProblems(): Problem[] {
   return problems
 }
 
+// 各段から1問ずつ選び、順番もランダムにした9問を生成
+export function generateOnePerMultiplicationTableProblems(): Problem[] {
+  const problems: Problem[] = []
+
+  for (let table = 1; table <= 9; table++) {
+    const multiplier = Math.floor(Math.random() * 9) + 1
+    problems.push({
+      num1: table,
+      num2: multiplier,
+      answer: table * multiplier,
+      operator: "×",
+    })
+  }
+
+  for (let index = problems.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    const currentProblem = problems[index]
+    problems[index] = problems[randomIndex]
+    problems[randomIndex] = currentProblem
+  }
+
+  return problems
+}
+
 // 各段ごとの掛け算問題を生成（1の段〜9の段）
 export function generateMultiplicationByTableProblems(): Problem[] {
   const allProblems: Problem[] = []
