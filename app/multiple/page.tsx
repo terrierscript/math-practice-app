@@ -4,10 +4,11 @@ import { useState } from "react"
 import { Button, Center, Stack, Text, SimpleGrid } from "@mantine/core"
 import { useRouter } from "next/navigation"
 import { MultiplicationGame } from "../../components/multiplication-game"
+import { MultiplicationAccuracyMap } from "../../components/multiplication-accuracy-map"
 import { getSavedStateInfo, loadGameState, clearGameState, saveGameState, type GameState } from "../../utils/storage"
-import { generateMultiplicationTableProblems, generateRandomMultiplicationProblems } from "../../utils/problems"
+import { generateMultiplicationTableProblems, generateOnePerMultiplicationTableProblems, generateRandomMultiplicationProblems } from "../../utils/problems"
 
-type MultiplicationMode = number | "random" | null
+type MultiplicationMode = number | "random" | "one-per-table" | "accuracy-map" | null
 
 export default function MultiplePage() {
   const [selectedTable, setSelectedTable] = useState<MultiplicationMode>(null)
@@ -47,6 +48,30 @@ export default function MultiplePage() {
           >
             9×9ランダム（81問）
           </Button>
+          <Button
+            onClick={() => setSelectedTable("accuracy-map")}
+            size="xl"
+            color="blue"
+            variant="outline"
+            radius="xl"
+            fullWidth
+            style={{ height: '64px', fontSize: '1.25rem', fontWeight: 'bold' }}
+            data-testid="multiplication-accuracy-map-button"
+          >
+            正解率を9×9マップで見る
+          </Button>
+          <Button
+            onClick={() => setSelectedTable("one-per-table")}
+            size="xl"
+            color="teal"
+            variant="filled"
+            radius="xl"
+            fullWidth
+            style={{ height: '80px', fontSize: '1.5rem', fontWeight: 'bold' }}
+            data-testid="one-per-table-multiplication-button"
+          >
+            各段から1問ずつ（9問）
+          </Button>
           <Text size="lg" fw="bold" ta="center" c="dimmed">
             各段から選ぶ
           </Text>
@@ -81,9 +106,15 @@ export default function MultiplePage() {
     )
   }
 
+  if (selectedTable === "accuracy-map") {
+    return <MultiplicationAccuracyMap onBack={() => setSelectedTable(null)} />
+  }
+
   const problems = selectedTable === "random"
     ? generateRandomMultiplicationProblems()
-    : generateMultiplicationTableProblems(selectedTable)
+    : selectedTable === "one-per-table"
+      ? generateOnePerMultiplicationTableProblems()
+      : generateMultiplicationTableProblems(selectedTable)
 
   return (
     <MultiplicationGame
