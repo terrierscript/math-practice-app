@@ -5,10 +5,12 @@ import { Button, Center, Stack, Text, SimpleGrid } from "@mantine/core"
 import { useRouter } from "next/navigation"
 import { MultiplicationGame } from "../../components/multiplication-game"
 import { getSavedStateInfo, loadGameState, clearGameState, saveGameState, type GameState } from "../../utils/storage"
-import { generateMultiplicationTableProblems } from "../../utils/problems"
+import { generateMultiplicationTableProblems, generateRandomMultiplicationProblems } from "../../utils/problems"
+
+type MultiplicationMode = number | "random" | null
 
 export default function MultiplePage() {
-  const [selectedTable, setSelectedTable] = useState<number | null>(null)
+  const [selectedTable, setSelectedTable] = useState<MultiplicationMode>(null)
   const router = useRouter()
 
   const handleStateChange = (gameState: Omit<GameState, 'savedAt'>) => {
@@ -31,7 +33,22 @@ export default function MultiplePage() {
             ta="center"
             c="dark"
           >
-            かけざん（各段）
+            かけざん
+          </Text>
+          <Button
+            onClick={() => setSelectedTable("random")}
+            size="xl"
+            color="orange"
+            variant="filled"
+            radius="xl"
+            fullWidth
+            style={{ height: '80px', fontSize: '1.5rem', fontWeight: 'bold' }}
+            data-testid="random-multiplication-button"
+          >
+            9×9ランダム（81問）
+          </Button>
+          <Text size="lg" fw="bold" ta="center" c="dimmed">
+            各段から選ぶ
           </Text>
           <SimpleGrid cols={3} spacing="md">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((table) => (
@@ -64,8 +81,9 @@ export default function MultiplePage() {
     )
   }
 
-  // 選択された段の問題を生成
-  const problems = generateMultiplicationTableProblems(selectedTable)
+  const problems = selectedTable === "random"
+    ? generateRandomMultiplicationProblems()
+    : generateMultiplicationTableProblems(selectedTable)
 
   return (
     <MultiplicationGame

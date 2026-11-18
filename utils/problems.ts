@@ -123,6 +123,18 @@ export function generateMultiplicationProblems(): Problem[] {
   return allProblems.sort(() => Math.random() - 0.5)
 }
 
+// 1〜9の全81通りをランダムな順番で出題
+export function generateRandomMultiplicationProblems(): Problem[] {
+  const problems = generateMultiplicationByTableProblems()
+
+  for (let index = problems.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1))
+    ;[problems[index], problems[randomIndex]] = [problems[randomIndex], problems[index]]
+  }
+
+  return problems
+}
+
 // 各段ごとの掛け算問題を生成（1の段〜9の段）
 export function generateMultiplicationByTableProblems(): Problem[] {
   const allProblems: Problem[] = []
